@@ -56,18 +56,20 @@ const GetPDF = () => {
                     product: product.value,
                     line: line.value
                 } // Importante para obter a resposta como ArrayBuffer
+            }).then((res) => {
+                // Cria um Blob a partir da resposta
+                const pdfBlob = new Blob([res.data], { type: 'application/pdf' });
+
+                // Cria uma URL temporária para o Blob
+                const pdfUrl = URL.createObjectURL(pdfBlob);
+
+                // Abre o PDF em uma nova aba
+                window.open(pdfUrl);
+
+                setLoading(false)
             });
 
-            // Cria um Blob a partir da resposta
-            const pdfBlob = new Blob([response.data], { type: 'application/pdf' });
 
-            // Cria uma URL temporária para o Blob
-            const pdfUrl = URL.createObjectURL(pdfBlob);
-
-            // Abre o PDF em uma nova aba
-            window.open(pdfUrl);
-
-            setLoading(false)
 
         } catch (err) {
             setLoading(false)
@@ -77,7 +79,7 @@ const GetPDF = () => {
     }
     return (
         <div className='h-screen w-full flex items-center flex-col'>
-             <Navbar links={linksEng}/>
+            <Navbar links={linksEng} />
             <h1 className='text-[#284B63] text-2xl mt-[120px]'>
                 Olá, selecione as opções para que seja exibida as sua instrução de trabalho
             </h1>

@@ -56,7 +56,6 @@ const GetPDF = () => {
                 } // Importante para obter a resposta como ArrayBuffer
             }).then((res) => {
                 const pdfBlob = new Blob([res.data], { type: 'application/pdf' });
-
                 // Cria uma URL temporária para o Blob
                 const pdfUrl = URL.createObjectURL(pdfBlob);
 
