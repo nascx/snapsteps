@@ -1,0 +1,45 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "tsx --watch src/snapsteps.ts",
+    "connection-db": "tsx --watch src/config/db.ts",
+    "test-pdf": "tsx --watch src/views/teste.ts",
+    "build": "tsup src"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "convert-excel-to-json": "^1.7.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "excel4node": "^1.8.2",
+    "exceljs": "^4.4.0",
+    "express": "^4.19.2",
+    "html-pdf": "^3.0.1",
+    "multer": "^1.4.5-lts.1",
+    "mysql": "^2.18.1",
+    "pdf-lib": "^1.17.1",
+    "pdf-parse": "^1.1.1",
+    "pdf-table-extractor": "^1.0.3",
+    "pdf-to-excel": "^0.3.2",
+    "pdf2json": "^3.1.3",
+    "puppeteer": "^22.10.0",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "@types/convert-excel-to-json": "^1.7.4",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/html-pdf": "^3.0.3",
+    "@types/multer": "^1.4.11",
+    "@types/mysql": "^2.15.26",
+    "tsup": "^8.0.2",
+    "tsx": "^4.9.3",
+    "typescript": "^5.4.5"
+  }
+}

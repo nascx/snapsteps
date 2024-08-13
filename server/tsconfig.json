@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist",           // Diretório de saída
+    "rootDir": "./src",           // Diretório raiz para entrada
+    "baseUrl": "./",              // Base URL para resolução de caminhos
+    "paths": {                    // Alias de caminhos (se necessário)
+      "@src/*": ["src/*"]
+    },
+    "module": "CommonJS",         // Formato do módulo: CommonJS
+    "target": "ESNext",           // Target ESNext
+    "moduleResolution": "node",   // Resolução de módulo como Node.js
+    "esModuleInterop": true,      // Suporte para interop de módulos ES
+    "strict": true,               // Modo estrito
+    "skipLibCheck": true,         // Ignorar verificação de tipos em arquivos de definição
+    "forceConsistentCasingInFileNames": true  // Consistência de maiúsculas/minúsculas
+  },
+  "include": ["src/**/*.ts"],     // Arquivos de entrada
+  "exclude": ["node_modules", "dist"]  // Diretórios a excluir
+}
