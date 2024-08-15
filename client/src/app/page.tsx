@@ -163,18 +163,23 @@ const GetPDF = () => {
                     line: line.value,
                     post: post.value
                 } // Importante para obter a resposta como ArrayBuffer
-            });
+            }).then((res) => {
+                // Cria um Blob a partir da resposta
+                const pdfBlob = new Blob([res.data], { type: 'application/pdf' });
 
-            // Cria um Blob a partir da resposta
-            const pdfBlob = new Blob([response.data], { type: 'application/pdf' });
+                // Cria uma URL temporária para o Blob
+                const pdfUrl = URL.createObjectURL(pdfBlob);
 
-            // Cria uma URL temporária para o Blob
-            const pdfUrl = URL.createObjectURL(pdfBlob);
+                // Abre o PDF em uma nova aba
+                window.open(pdfUrl);
 
-            // Abre o PDF em uma nova aba
-            window.open(pdfUrl);
+                setLoading(false)
+            }).catch((err) => {
+                setLoading(false)
+                console.log("Erro: ", err)
+                toast.error('Erro ao obter a lista, verifique se os parâmetros estão corretos ou se a IT usada já está no banco de dados!')
+            });;
 
-            setLoading(false)
         } catch (err) {
             setLoading(false)
             toast.error("Algo deu errado, verifique se os dados selecionados estão corretos")

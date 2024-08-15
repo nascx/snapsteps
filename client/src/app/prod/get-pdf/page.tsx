@@ -62,7 +62,11 @@ const GetPDF = () => {
                 // Abre o PDF em uma nova aba
                 window.open(pdfUrl);
                 setLoading(false)
-            });
+            }).catch((err) => {
+                setLoading(false)
+                console.log("Erro: ", err)
+                toast.error('Erro ao obter a lista, verifique se os parâmetros estão corretos ou se a IT usada já está no banco de dados!')
+            });;
 
             // Cria um Blob a partir da resposta
 
