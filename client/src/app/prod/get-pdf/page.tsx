@@ -42,39 +42,31 @@ const GetPDF = () => {
             const lines = res.data.lines
             setLineOptions(lines)
         })
-    }, [modelOptions, productOptions, lineOptions])
+    }, [])
 
     const viewIT = async () => {
-        try {
-            setLoading(true)
-            const response = await axios.get(`${urlAPi}/pdf`, {
-                responseType: 'arraybuffer',
-                params: {
-                    model: model.value,
-                    product: product.value,
-                    line: line.value
-                } // Importante para obter a resposta como ArrayBuffer
-            }).then((res) => {
-                const pdfBlob = new Blob([res.data], { type: 'application/pdf' });
-                // Cria uma URL temporária para o Blob
-                const pdfUrl = URL.createObjectURL(pdfBlob);
 
-                // Abre o PDF em uma nova aba
-                window.open(pdfUrl);
-                setLoading(false)
-            }).catch((err) => {
-                setLoading(false)
-                console.log("Erro: ", err)
-                toast.error('Erro ao obter a lista, verifique se os parâmetros estão corretos ou se a IT usada já está no banco de dados!')
-            });;
+        setLoading(true)
+        await axios.get(`${urlAPi}/pdf`, {
+            responseType: 'arraybuffer',
+            params: {
+                model: model.value,
+                product: product.value,
+                line: line.value
+            } // Importante para obter a resposta como ArrayBuffer
+        }).then((res) => {
+            const pdfBlob = new Blob([res.data], { type: 'application/pdf' });
+            // Cria uma URL temporária para o Blob
+            const pdfUrl = URL.createObjectURL(pdfBlob);
 
-            // Cria um Blob a partir da resposta
-
-        } catch (err) {
+            // Abre o PDF em uma nova aba
+            window.open(pdfUrl);
+            setLoading(false)
+        }).catch((err) => {
             setLoading(false)
             console.log("Erro: ", err)
             toast.error('Erro ao obter a lista, verifique se os parâmetros estão corretos ou se a IT usada já está no banco de dados!')
-        }
+        })
     }
     return (
         <div className='h-screen w-full flex items-center flex-col'>

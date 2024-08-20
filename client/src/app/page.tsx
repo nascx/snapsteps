@@ -148,42 +148,36 @@ const GetPDF = () => {
             const lines = res.data.lines
             setLineOptions(lines)
         })
-    })
+    }, [])
 
     const viewIT = async () => {
-        try {
 
-            setLoading(true)
+        setLoading(true)
 
-            const response = await axios.get(`${urlAPi}/pdf-by-post`, {
-                responseType: 'arraybuffer',
-                params: {
-                    model: model.value,
-                    product: product.value,
-                    line: line.value,
-                    post: post.value
-                } // Importante para obter a resposta como ArrayBuffer
-            }).then((res) => {
-                // Cria um Blob a partir da resposta
-                const pdfBlob = new Blob([res.data], { type: 'application/pdf' });
+        const response = await axios.get(`${urlAPi}/pdf-by-post`, {
+            responseType: 'arraybuffer',
+            params: {
+                model: model.value,
+                product: product.value,
+                line: line.value,
+                post: post.value
+            } // Importante para obter a resposta como ArrayBuffer
+        }).then((res) => {
+            // Cria um Blob a partir da resposta
+            const pdfBlob = new Blob([res.data], { type: 'application/pdf' });
 
-                // Cria uma URL temporária para o Blob
-                const pdfUrl = URL.createObjectURL(pdfBlob);
+            // Cria uma URL temporária para o Blob
+            const pdfUrl = URL.createObjectURL(pdfBlob);
 
-                // Abre o PDF em uma nova aba
-                window.open(pdfUrl);
+            // Abre o PDF em uma nova aba
+            window.open(pdfUrl);
 
-                setLoading(false)
-            }).catch((err) => {
-                setLoading(false)
-                console.log("Erro: ", err)
-                toast.error('Erro ao obter a lista, verifique se os parâmetros estão corretos ou se a IT usada já está no banco de dados!')
-            });;
-
-        } catch (err) {
             setLoading(false)
-            toast.error("Algo deu errado, verifique se os dados selecionados estão corretos")
-        }
+        }).catch((err) => {
+            setLoading(false)
+            console.log("Erro: ", err)
+            toast.error('Erro ao obter a lista, verifique se os parâmetros estão corretos ou se a IT usada já está no banco de dados!')
+        });;
     }
     return (
         <div className='h-screen w-full flex justify-center items-center flex-col'>
