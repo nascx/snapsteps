@@ -82,28 +82,66 @@ export const searchByModelAndProductOptionsAndLine = async () => {
                     console.log('Erro ao buscar por opções de Modelos e produtos')
                     reject(err)
                 }
+
                 const models: { [key: string]: { value: string, label: string } } = {}
+
+                // para filtrar apenas os modelos
+                const filteredModels = data.map((a: { model: string }) => {
+                    return { model: a.model.toUpperCase() }
+                })
+
+                const sortedModels = filteredModels.sort((a: { model: string }, b: { model: string }) => {
+                    return a.model.localeCompare(b.model)
+                })
+
+                // para filtrar os produtos
+                const filteredProducts = data.map((a: { product: string }) => {
+                    return { product: a.product.toUpperCase() }
+                })
+
+                const sortedProducts = filteredProducts.sort((a: { product: string }, b: { product: string }) => {
+                    return a.product.localeCompare(b.product)
+                })
+
+                // para colocar as linhas em ordem descrecente
+                const filteredLines = data.map((a: { line: string }) => {
+                    return { line: Number(a.line) }
+                })
+
+
+                const sortedLines = filteredLines.sort((a: { line: number }, b: { line: number }) => {
+                    if (a.line > b.line) {
+                        return -1
+                    } else if (a.line < b.line) {
+                        return 1
+                    } else {
+                        return 0
+                    }
+                })
+
 
                 if (data && data.length > 0) {
                     // para opções de modelos
-                    data.map((row: { model: string }) => {
-                        if (!models[row.model.toUpperCase()]) {
-                            models[row.model.toUpperCase()] = { value: row.model.toUpperCase(), label: row.model.toUpperCase() }
+                    sortedModels.map((row: { model: string }) => {
+                        if (!models[row.model]) {
+                            models[row.model] = { value: row.model, label: row.model }
                         }
                         return { label: row.model, value: row.model }
                     })
                     // para opções de produtos
                     const products: { [key: string]: { value: string, label: string } } = {}
-                    data.map((row: { product: string }) => {
-                        if (!products[row.product.toUpperCase()]) {
-                            products[row.product.toUpperCase()] = { label: row.product.toUpperCase(), value: row.product.toUpperCase() }
+
+                    sortedProducts.map((row: { product: string }) => {
+                        if (!products[row.product]) {
+                            products[row.product] = { label: row.product, value: row.product }
                         }
                         return { label: row.product, value: row.product }
                     })
+
                     const lines: { [key: string]: { value: string, label: string } } = {}
-                    data.map((row: { line: string }) => {
-                        if (!lines[row.line.toUpperCase()]) {
-                            lines[row.line.toUpperCase()] = { label: row.line.toUpperCase(), value: row.line.toUpperCase() }
+                    sortedLines.map((row: { line: string }) => {
+                        if (!lines[row.line]) {
+                            lines[row.line] = { label: row.line, value: row.line }
                         }
                         return { label: row.line, value: row.line }
                     })
