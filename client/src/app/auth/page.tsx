@@ -65,7 +65,7 @@ const Auth = () => {
         <div className='h-screen w-full flex flex-col justify-center items-center'>
             <ToastContainer />
             <div className="flex flex-col justify-center items-center gap-2  p-8 rounded-lg -m-3 w-[400px] border-2">
-                <h1 className='text-3xl font-bold text-[#284B63]'>Bem-vindo ao SnapSteps</h1>
+                <h1 className='text-3xl font-bold text-[#284B63]'>Bem-vindo ao IT@</h1>
                 <Image src={'/s.png'} width={140} height={200} alt='branch' />
                 <p className='text-[#284b63] -mt-4'>Insira suas credenciais para avançar</p>
                 <div className="flex mt-8 gap-4">

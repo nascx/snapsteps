@@ -182,7 +182,7 @@ const GetPDF = () => {
     return (
         <div className='h-screen w-full flex justify-center items-center flex-col'>
             <h2 className='text-[#284B63] text-4xl font-bold mb-2'>
-                Olá, Bem-vindo ao SnapSteps
+                Olá, Bem-vindo ao IT@
             </h2>
             <h2 className='text-[#284B63] text-2xl'>
                 Selecione as opções para que seja exibida as suas instruções de trabalho

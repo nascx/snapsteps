@@ -39,22 +39,22 @@ const GetList = () => {
             setProductOptions(products)
             setLineOtions(lines)
         })
-    }, [modelOptions, productOptions])
+    }, [])
 
     const downloadList = async () => {
         try {
-            const response = await axios.get(`${urlAPi}/prod/download-list`, {
+            await axios.get(`${urlAPi}/prod/download-list`, {
                 responseType: 'blob',
                 params: {
                     model: model.value,
                     product: product.value,
                     line: line.value
-                }
+                },
+            }).then((res) => {
+                const blob = new Blob([res.data]);
+                console.log(res.headers['content-type'])
+                saveAs(blob, `${res.headers['content-type']}.xlsx`);
             })
-
-            const blob = new Blob([response.data]);
-            saveAs(blob, 'prod_list.xlsx');
-
         } catch (err) {
             toast.error('Erro ao selecionar lista com esses parâmetros')
             console.log("Erro: ", err)
@@ -63,7 +63,7 @@ const GetList = () => {
 
     return (
         <div className='h-screen w-full flex flex-col items-center'>
-            <Navbar links={linksProd}/>
+            <Navbar links={linksProd} />
             <h2 className='text-2xl text-[#284B63] font-bold mt-[120px]'>
                 Escolha as informações da lista que deseja editar
             </h2>

@@ -6,8 +6,7 @@ import { config  } from 'dotenv'
 
 import { uploadEngineeringLists, uploadIT, uploadProductionListsMulter, uploadQuality } from '../src/config/multer'
 
-import { createList } from './controllers/engineerCtrl'
-import { downloadList, getModelAndProductOptions, getModelProductOptionsAndLine, sendIT, uploadProductionLists } from './controllers/producionCtrl'
+import { downloadList, getModelAndProductOptions, getModelProductOptionsAndLine, uploadProductionLists } from './controllers/producionCtrl'
 import { handleUploadIT, handleUploadQualityFile } from './controllers/sgiCtrl'
 import { sendPdf } from './views/sendCompletePdf'
 import { sendPdfByPost } from './views/sendPDfByPost'
@@ -35,8 +34,6 @@ snapsteps.post('/production/upload-file', uploadProductionListsMulter.single('pr
 
 snapsteps.post('/sgi/upload-it', uploadIT.single('it'), handleUploadIT)
 
-snapsteps.get('/production/download-it', sendIT)
-
 snapsteps.get('/production/get-options-to-pdf', getModelProductOptionsAndLine)
 
 snapsteps.get('/pdf', sendPdf)
@@ -48,8 +45,6 @@ snapsteps.post('/sgi/upload-quality-file', uploadQuality.single('quality'), hand
 snapsteps.get('/qa/get-files', sendQAFilesOptions)
 
 snapsteps.get('/qa/view-it', sendQAFile)
-
-
 
 const port = process.env.PORT || 4322
 

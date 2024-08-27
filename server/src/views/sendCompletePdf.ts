@@ -1,6 +1,6 @@
 import { PDFDocument } from "pdf-lib";
 import { Request, Response } from "express";
-import { exsitsThisListInProductionLists } from "../models/production";
+import { exsitsThisListInProductionListsByModelLineAndProduct } from "../models/production";
 import { generateCover } from "./generateCover";
 import { getPage } from "./getPage";
 import { generateObs } from "./generateObs";
@@ -11,7 +11,7 @@ export const sendPdf = async (req: Request, res: Response) => {
 
         console.log(model, product, line)
         
-        const content = await exsitsThisListInProductionLists(model as string, product as string, line as string) as { status: boolean, content: string };
+        const content = await exsitsThisListInProductionListsByModelLineAndProduct(model as string, product as string, line as string) as { status: boolean, content: string };
 
         if (content.status) {
             const jsonData = JSON.parse(content.content);
@@ -89,7 +89,7 @@ export const sendPdf = async (req: Request, res: Response) => {
 
             // Envia o novo documento PDF como resposta
             res.setHeader('Content-Type', 'application/pdf');
-            res.setHeader('Content-Disposition', 'inline; filename=extracted_page.pdf');
+            res.setHeader('Content-Disposition', 'inline; filename=trdtrcece.pdf');
             res.send(Buffer.from(pdf));
         } else {
             res.status(404).send('Conteúdo não encontrado.');

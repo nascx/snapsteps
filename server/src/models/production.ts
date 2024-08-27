@@ -3,7 +3,7 @@ import { db } from "../config/db";
 export const getContentFromProductionList = async (model: string, product: string, line: string) => {
     try {
         return new Promise(async (resolve, reject) => {
-            const q = 'SELECT content FROM production_lists WHERE model = ? AND product = ? AND line = ?'
+            const q = 'SELECT name, content FROM production_lists WHERE model = ? AND product = ? AND line = ?'
             await db.query(q, [model, product, line], (err, data) => {
                 if (err) {
                     console.log('Erro ao buscar por lista na tabela de listas de produção: ', err)
@@ -12,7 +12,7 @@ export const getContentFromProductionList = async (model: string, product: strin
                 if (data && data.length > 0) {
                     console.log('Dados obtidos com sucesso!')
                     const content = JSON.parse(data[0].content)
-                    resolve({ status: true, content: content })
+                    resolve({ status: true, content: content, name: data[0].name })
                 } else {
                     console.log('Não existe uma lista na tabela de listas de produção que satizfaça essa condição.')
                     resolve({ status: false, content: [] })
@@ -162,7 +162,31 @@ export const searchByModelAndProductOptionsAndLine = async () => {
 }
 
 // para procurar se existe uma lista com model e produto e linha iguai na tabela de listas de produção
-export const exsitsThisListInProductionLists = (model: string, product: string, line: string) => {
+export const exsitsThisListInProductionListsByName = (name: string) => {
+    try {
+        return new Promise(async (resolve, reject) => {
+            const q = 'SELECT content FROM production_lists WHERE name = ?'
+            const values = [name]
+            await db.query(q, values, (err, data) => {
+                if (err) {
+                    console.log('Erro ao buscar por lista bna tabela de lista de produção!')
+                    reject(err)
+                }
+                if (data && data.length > 0) {
+                    console.log('Existe listas na tabela de listas de engenharia que usam esse modelo e produto')
+                    resolve({ status: true, content: data[0].content })
+                } else {
+                    resolve({ status: false, content: [] })
+                }
+            })
+        })
+    } catch (error) {
+        throw error
+    }
+}
+
+// para checar por linha modelo e produto
+export const exsitsThisListInProductionListsByModelLineAndProduct = (model: string, product: string, line: string) => {
     try {
         return new Promise(async (resolve, reject) => {
             const q = 'SELECT content FROM production_lists WHERE model = ? AND product = ? AND line = ?'
@@ -186,11 +210,11 @@ export const exsitsThisListInProductionLists = (model: string, product: string, 
 }
 
 // para criar uma nova lista
-export const saveNewListInProductionLists = async (model: string, product: string, line: string, content: string) => {
+export const saveNewListInProductionLists = async (name: string, model: string, product: string, line: string, content: string) => {
     try {
         return new Promise(async (resolve, reject) => {
-            const q = 'INSERT INTO production_lists (model, product, line, content) VALUES (?, ?, ?, ?)'
-            await db.query(q, [model, product, line, content], (err, data) => {
+            const q = 'INSERT INTO production_lists (name, model, product, line, content) VALUES (?, ?, ?, ?, ?)'
+            await db.query(q, [name, model, product, line, content], (err, data) => {
                 if (err) {
                     reject(err)
                 }
@@ -207,11 +231,11 @@ export const saveNewListInProductionLists = async (model: string, product: strin
 }
 
 // para atualizar os dados na lista de produção
-export const updateListInProductionLists = (model: string, product: string, line: string, content: string) => {
+export const updateListInProductionLists = (name: string, model: string, product: string, line: string, content: string) => {
     try {
         return new Promise(async (resolve, reject) => {
-            const q = 'UPDATE production_lists SET content = ? WHERE model = ? AND product = ? AND line = ?'
-            const values = [content, model, product, line]
+            const q = 'UPDATE production_lists SET content = ?, model = ?, product = ?, line = ? WHERE name = ?'
+            const values = [content, model, product, line, name]
             await db.query(q, values, (err, data) => {
                 if (err) {
                     console.log('Erro ao atualizar uma lista na tabela de listas de produção!', err)
