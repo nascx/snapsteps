@@ -42,16 +42,16 @@ export const linksSGI = [
         label: 'Salvar IT da Produção',
         url: `${host}/sgi/upload-it`
     },
-    {
+    /* {
         label: 'Salvar IT do Qualidade',
         url: `${host}/sgi/upload-quality-file`
-    },
+    }, */
     {
         label: 'Visualizar IT da produção',
         url: `${host}/sgi/get-pdf`
     },
-    {
+    /* {
         label: 'Visualizar IT da Qualidade',
         url: `${host}/sgi/view-it-qa`
-    }
+    } */
 ]
