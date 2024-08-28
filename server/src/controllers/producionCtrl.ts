@@ -87,7 +87,7 @@ export const uploadProductionLists = async (req: Request, res: Response) => {
         const { name } = tranformName(filename as string)
 
         // 2. pegando o caminho do arquivo 
-        const filePath: string = path.resolve(__dirname, `../../00_production_lists/${req.file?.originalname}`)
+        const filePath: string = path.resolve(__dirname, `../00_production_lists/${req.file?.originalname}`)
 
         // 3. convertendo o conteúdo do arquivo em json
         const jsonData = convertExcelToJsonWithoutAlterLine(filePath)
