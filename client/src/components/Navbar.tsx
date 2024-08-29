@@ -17,7 +17,7 @@ const Navbar = ({ links }: NavbarProps) => {
     }, [currentPath]);
 
     return (
-        <nav className="flex items-center justify-between p-4 h-[60px] w-full">
+        <nav className="w-full absolute top-0 flex items-center justify-between p-4 h-[60px]">
             <div className="flex items-center flex-shrink-0 mr-6 cursor-pointer h-[60px]">
                 <span className="font-semibold text-2xl text-[#284B63] tracking-tight">IT@</span>
             </div>

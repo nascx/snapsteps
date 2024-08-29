@@ -17,7 +17,7 @@ const Upload = ({ name, img, descriprion, handleChange, handleSubmit, loading }:
     return (
         <form
             onSubmit={handleSubmit}
-            className="flex items-center justify-center flex-col mt-[100px] w-full">
+            className="flex items-center justify-center flex-col mt-[100px] w-full h-screen">
             <div className="flex flex-col justify-center items-center shrink-0 mb-7 border-2 border-[#284B63] rounded-lg min-w-[400px] min-h-[250px]">
                 <Image src={img} alt='Image' width={150} height={100} className='mb-4' />
                 <p className='text-[#284B63] font-bold'>{descriprion}</p>

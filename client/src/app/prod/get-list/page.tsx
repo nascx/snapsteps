@@ -62,9 +62,9 @@ const GetList = () => {
     }
 
     return (
-        <div className='h-screen w-full flex flex-col items-center'>
+        <div className='h-screen w-full flex flex-col items-center justify-center'>
             <Navbar links={linksProd} />
-            <h2 className='text-2xl text-[#284B63] font-bold mt-[120px]'>
+            <h2 className='text-2xl text-[#284B63] font-bold'>
                 Escolha as informações da lista que deseja editar
             </h2>
             <div className="flex mt-[100px] gap-4">

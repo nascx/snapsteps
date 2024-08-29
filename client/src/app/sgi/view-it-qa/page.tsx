@@ -66,7 +66,7 @@ const SeacrQA = () => {
     }
 
     return (
-            <div className='h-screen w-full flex flex-col items-center'>
+            <div className='h-screen w-full flex justify-center flex-col items-center'>
                 <Navbar links={linksSGI}/>
                 <h2 className='text-[#284B63] text-2xl font-bold mt-[100px]'>Pesquise seu arquivo por código ou título</h2>
                 <input

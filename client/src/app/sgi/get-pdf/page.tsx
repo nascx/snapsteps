@@ -70,7 +70,7 @@ const GetPDF = () => {
         });;
     }
     return (
-        <div className='h-screen w-full flex items-center flex-col'>
+        <div className='h-screen w-full flex justify-center items-center flex-col'>
             <Navbar links={linksSGI} />
             <h1 className='text-[#284B63] text-2xl mt-[120px]'>
                 Olá, selecione as opções para que seja exibida as sua instrução de trabalho
