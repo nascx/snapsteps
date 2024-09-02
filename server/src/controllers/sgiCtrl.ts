@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import path from 'node:path'
 import { existsThisIT, existsThisQAFile, insertIT, insertQAFile } from "../models/sgi";
-import fs from 'node:fs'
 
 
 function removeFileExtension(filename: string) {

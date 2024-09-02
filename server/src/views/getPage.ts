@@ -1,6 +1,9 @@
 import { PDFDocument } from "pdf-lib";
 import path from 'node:path'
 import fs from 'node:fs'
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // para pegar a página especifica da it
 export const getPage = async (it: string, pageNumber: number): Promise<Uint8Array> => {

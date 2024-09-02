@@ -13,6 +13,10 @@ import { convertJsonToExcel } from "../commonFunctions/convertJsonToExcel";
 import { convertExcelToJsonWithoutAlterLine, convertExcelToJson } from "../commonFunctions/convertExcelToJson";
 import path from 'node:path'
 import fs from 'node:fs'
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 
 // para fazer download da lista
 export const downloadList = async (req: Request, res: Response) => {
