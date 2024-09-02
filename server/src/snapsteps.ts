@@ -3,17 +3,19 @@ import express from 'express'
 import cors from 'cors'
 
 import { config  } from 'dotenv'
-
-import { uploadEngineeringLists, uploadIT, uploadProductionListsMulter, uploadQuality } from '../src/config/multer'
+  
+import { uploadEngineeringLists, uploadIT, uploadProductionListsMulter } from '../src/config/multer'
 
 import { downloadList, getModelAndProductOptions, getModelProductOptionsAndLine, uploadProductionLists } from './controllers/producionCtrl'
-import { handleUploadIT, handleUploadQualityFile } from './controllers/sgiCtrl'
+import { handleUploadIT } from './controllers/sgiCtrl'
 import { sendPdf } from './views/sendCompletePdf'
 import { sendPdfByPost } from './views/sendPDfByPost'
-import { sendQAFilesOptions } from './controllers/qaCtrl'
-import { sendQAFile } from './views/sendQAfile'
+/* import { sendQAFilesOptions } from './controllers/userQAController'
+ */import { sendQAFile } from './views/sendQAfile'
 import { credentialCheck } from './controllers/authCtrl'
-
+import SGIUserRouter from './routes/SGIUserRoutes'
+import { Multer, uploadQualityFile } from '../src/config/multer'
+import { SGIUserController } from './controllers/SGIUserController'
 config()
 
 const snapsteps = express()
@@ -40,9 +42,15 @@ snapsteps.get('/pdf', sendPdf)
 
 snapsteps.get('/pdf-by-post', sendPdfByPost)
 
-snapsteps.post('/sgi/upload-quality-file', uploadQuality.single('quality'), handleUploadQualityFile)
 
-snapsteps.get('/qa/get-files', sendQAFilesOptions)
+// rora para salvar o arquivo da qualidade
+snapsteps.post(
+    '/sgi/upload/qualityfile',
+    uploadQualityFile.single('quality-file'),
+    SGIUserController.saveFile
+)
+
+snapsteps.get('/qa/get-qa-file-options', SGIUserController.sendQualityFilesOptions)
 
 snapsteps.get('/qa/view-it', sendQAFile)
 

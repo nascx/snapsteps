@@ -27,10 +27,10 @@ const useUploadQA = () => {
 
         const formData = new FormData()
 
-        await formData.append('quality', list as Blob, list?.name)
+        await formData.append('quality-file', list as Blob, list?.name)
 
         try {
-            await axios.post(`${urlAPi}/sgi/upload-quality-file`, formData, {
+            await axios.post(`${urlAPi}/sgi/upload/qualityfile`, formData, {
                 headers: {
                     "Content-Type": "multipart/form-data"
                 }

@@ -12,7 +12,7 @@ const UploadQA = () => {
     <>
       <Navbar links={linksSGI}/>
       <Upload
-        name="list"
+        name="quality-file"
         img="/QA.png"
         descriprion="Escolha abaixo a IT da Qualidade para fazer upload"
         handleChange={handleListChange}

@@ -74,23 +74,23 @@ const GetPDF = () => {
     return (
         <div className='h-screen w-full justify-center flex items-center flex-col'>
             <Navbar links={linksEng} />
-            <h1 className='text-[#284B63] text-2xl mt-[120px]'>
+            <h1 className='text-[#284B63] text-2xl'>
                 Olá, selecione as opções para que seja exibida as sua instrução de trabalho
             </h1>
-            <div className="flex mt-[80px] gap-4">
-                <AsyncSelect
-                    options={modelOptions}
-                    className='rounded-md min-w-[200px] text-[#284b63]'
-                    value={model}
-                    onChange={handleModelChange}
-                    placeholder='Selecione o modelo'
-                />
+            <div className="flex mt-[100px] gap-4">
                 <AsyncSelect
                     options={productOptions}
                     className='rounded-md min-w-[200px] text-[#284b63]'
                     value={product}
                     onChange={handleProductChange}
                     placeholder='Selecione o processo'
+                />
+                <AsyncSelect
+                    options={modelOptions}
+                    className='rounded-md min-w-[200px] text-[#284b63]'
+                    value={model}
+                    onChange={handleModelChange}
+                    placeholder='Selecione o modelo'
                 />
                 <AsyncSelect
                     options={lineOptions}

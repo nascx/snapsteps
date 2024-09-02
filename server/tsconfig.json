@@ -6,8 +6,8 @@
     "paths": {                    // Alias de caminhos (se necessário)
       "@src/*": ["src/*"]
     },
-    "module": "CommonJS",         // Formato do módulo: CommonJS
-    "target": "ESNext",           // Target ESNext
+    "module": "ESNext",         // Formato do módulo: CommonJS
+    "target": "ES2022",           // Target ESNext
     "moduleResolution": "node",   // Resolução de módulo como Node.js
     "esModuleInterop": true,      // Suporte para interop de módulos ES
     "strict": true,               // Modo estrito

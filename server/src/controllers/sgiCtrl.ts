@@ -3,11 +3,6 @@ import path from 'node:path'
 import { existsThisIT, existsThisQAFile, insertIT, insertQAFile } from "../models/sgi";
 import fs from 'node:fs'
 
-//importação da biblioteca para converter pdf para excel
-const pdf2excel = require('pdf-to-excel')
-
-//importação da biblioteca para converter excel em json
-const excel2json = require('convert-excel-to-json')
 
 function removeFileExtension(filename: string) {
     return filename.replace(/\.[^/.]+$/, "");
@@ -32,7 +27,7 @@ export const handleUploadIT = async (req: Request, res: Response) => {
     }
 }
 
-const getInfosFromQAFile = async (filePath: string, excelPath: string) => {
+/* const getInfosFromQAFile = async (filePath: string, excelPath: string) => {
     try {
 
         //criando o arquivo excel
@@ -89,9 +84,9 @@ const getInfosFromQAFile = async (filePath: string, excelPath: string) => {
     } catch (error) {
         console.log(error)
     }
-}
+} */
 
-export const handleUploadQualityFile = async (req: Request, res: Response) => {
+/* export const handleUploadQualityFile = async (req: Request, res: Response) => {
     try {
 
         const orginalPath: string = path.join(__dirname, `../../_quality/${req.file?.originalname}`)
@@ -122,8 +117,8 @@ export const handleUploadQualityFile = async (req: Request, res: Response) => {
 
         /* fs.unlinkSync(excelPath) */
 
-        res.status(200).json({ code, title })
+/*         res.status(200).json({ code, title })
     } catch (error) {
         res.status(500).json(error)
     }
-}
+} */

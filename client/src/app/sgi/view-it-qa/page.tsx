@@ -13,6 +13,8 @@ const SeacrQA = () => {
 
     const [value, setValue] = useState<string>('')
 
+    const [by, setBy] = useState<string>('')
+
     const handleValueChange = (e: ChangeEvent<HTMLInputElement>) => {
         setValue(e.target.value)
     }
@@ -21,9 +23,9 @@ const SeacrQA = () => {
 
     useEffect(() => {
         if (value !== '') {
-            axios.get(`${urlAPi}/qa/get-files`, {
+            axios.get(`${urlAPi}/qa/get-qa-file-options`, {
                 params: {
-                    value: value
+                    value: value,
                 }
             }).then((res) => {
                 setQaFiles(res.data)
@@ -68,15 +70,15 @@ const SeacrQA = () => {
     return (
             <div className='h-screen w-full flex justify-center flex-col items-center'>
                 <Navbar links={linksSGI}/>
-                <h2 className='text-[#284B63] text-2xl font-bold mt-[100px]'>Pesquise seu arquivo por código ou título</h2>
+                <h2 className='text-[#284B63] text-2xl font-bold mt-[100px]'>Pesquise o arquivo por código ou título</h2>
                 <input
                     type="text"
                     placeholder='Digite aqui o título ou código da IT'
-                    className='mt-12 w-[400px] border h-[40px] pl-4 focus:outline-none rounded-md text-[#284b63]'
+                    className='mt-4 w-[400px] border h-[40px] pl-4 focus:outline-none rounded-md text-[#284b63]'
                     value={value}
                     onChange={handleValueChange}
                 />
-                <div className="flex flex-col max-h-[200px] min-h-[60px] mt-12 overflow-y-scroll max-w-[550px] min-w-[550px] rounded-md gap-8">
+                <div className="flex flex-col h-[300px] mt-12 overflow-y-scroll max-w-[550px] min-w-[550px] rounded-md gap-8">
                     {
                         qaFiles.length > 0 ? qaFiles.map((it: { code: string, title: string, path: string }) => (
                             <div key={it.code} className='flex flex-row w-full min-h-[30px] max-h-[30px] gap-3 justify-between p-2'>
