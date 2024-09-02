@@ -7,6 +7,6 @@ export default defineConfig({
   sourcemap: true,         // Gera mapas de origem (opcional)
   clean: true,             // Limpa o diretório de saída antes de compilar
   dts: true,               // Gera arquivos de declaração de tipo (.d.ts)
-  format: ['cjs'],  // Formatos de saída, como CommonJS e ESM
+  format: ['cjs', 'esm'],  // Formatos de saída, como CommonJS e ESM
   tsconfig: 'tsconfig.json', // Especifica o caminho para o tsconfig.json
 });
