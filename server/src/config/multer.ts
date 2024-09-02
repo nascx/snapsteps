@@ -54,7 +54,7 @@ export const uploadIT = multer({ storage: storageIT })
 
 const storageQualityFile = multer.diskStorage({
     destination: (req, file, callback) => {
-        const filePath: string = path.join(__dirname, '../../_quality')
+        const filePath: string = path.join(__dirname, '../_quality')
         callback(null, filePath)
     },
     filename: function (req, file, callback) {
