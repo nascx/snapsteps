@@ -51,8 +51,7 @@ export class SGIUserController {
                 return i
             }
         })
-        console.log(titleIndex)
-        console.log(textFromImage)
+
         // retornando o título do arquivo
         return textFromImage[titleIndex + 1]
     }
@@ -75,6 +74,8 @@ export class SGIUserController {
             const imagePath = path.resolve(__dirname, `../_quality/${code}.png`)
 
             const title = await this.getTitle(imagePath)
+
+            console.log(title)
 
             // checando se esse arquivo já têm na base de dados
             if (await SGIUser.findQualityFileByCode(code)) {
