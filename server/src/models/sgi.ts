@@ -3,17 +3,21 @@ import { db } from "../config/db";
 export const existsThisIT = async (name: string) => {
    try {
     return new Promise(async(resolve, reject) => {
+        console.log('inicio da busca')
         const q = 'SELECT path FROM its WHERE name = ?'
         await db.query(q, [name], (err, data) => {
             if (err) {
                 reject(err)
             }
             if (data && data.length > 0 ) {
+                console.log(`it ${name} encontrada`)
                 resolve({status: true})
             } else {
+                console.log(`it ${name} não encontrada`)
                 resolve({status: false})
             }
         })
+        console.log('fim da busca')
     })
    } catch (error) {
     throw error
@@ -23,10 +27,12 @@ export const existsThisIT = async (name: string) => {
 export const insertIT = async (path: string, name: string) => {
     try {
         return new Promise(async(resolve, reject) => {
+            console.log('inicio da inserção dos dados da it no banco')
             const q = 'INSERT INTO its (path, name) VALUES (?, ?)'
             await db.query(q, [path, name], (err, data) => {
                 if (err) {
                     reject(err)
+                    console.log(err)
                 }
                 if (data) {
                     console.log(data)
@@ -37,6 +43,7 @@ export const insertIT = async (path: string, name: string) => {
                     reject('Nenhum dado inserido na tabela de its!')
                 }
             })
+            console.log('fim da inserção dos dados da it no banco')
         })
     } catch (error) {
         throw error
