@@ -51,6 +51,10 @@ export class SGIUserController {
                 return i
             }
         })
+
+        if (textFromImage[titleIndex + 1] === '') {
+            return textFromImage[titleIndex + 2]
+        }
         console.log(titleIndex)
         console.log(textFromImage)
         // retornando o título do arquivo
