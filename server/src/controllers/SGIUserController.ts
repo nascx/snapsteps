@@ -51,7 +51,8 @@ export class SGIUserController {
                 return i
             }
         })
-
+        console.log(titleIndex)
+        console.log(textFromImage)
         // retornando o título do arquivo
         return textFromImage[titleIndex + 1]
     }
