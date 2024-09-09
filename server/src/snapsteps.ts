@@ -10,10 +10,8 @@ import { downloadList, getModelAndProductOptions, getModelProductOptionsAndLine,
 import { handleUploadIT } from './controllers/sgiCtrl'
 import { sendPdf } from './views/sendCompletePdf'
 import { sendPdfByPost } from './views/sendPDfByPost'
-/* import { sendQAFilesOptions } from './controllers/userQAController'
- */import { sendQAFile } from './views/sendQAfile'
-import { credentialCheck } from './controllers/authCtrl'
-import SGIUserRouter from './routes/SGIUserRoutes'
+import { sendQAFile } from './views/sendQAfile'
+import { Auth } from './controllers/Auth'
 import { Multer, uploadQualityFile } from '../src/config/multer'
 import { SGIUserController } from './controllers/SGIUserController'
 config()
@@ -24,7 +22,7 @@ snapsteps.use(express.json())
 
 snapsteps.use(cors())
 
-snapsteps.get('/auth', credentialCheck)
+snapsteps.get('/auth', Auth.credentialCheck)
 
 snapsteps.post('/eng/list-upload', uploadEngineeringLists.single('list'), uploadProductionLists )
 
@@ -43,13 +41,14 @@ snapsteps.get('/pdf', sendPdf)
 snapsteps.get('/pdf-by-post', sendPdfByPost)
 
 
-// rora para salvar o arquivo da qualidade
+// rota para salvar o arquivo da qualidade
 snapsteps.post(
     '/sgi/upload/qualityfile',
     uploadQualityFile.single('quality-file'),
     SGIUserController.saveFile
 )
 
+// rota para obter as opções de arquivos da qualidade
 snapsteps.get('/qa/get-qa-file-options', SGIUserController.sendQualityFilesOptions)
 
 snapsteps.get('/qa/view-it', sendQAFile)

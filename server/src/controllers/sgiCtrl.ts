@@ -1,5 +1,10 @@
 import { Request, Response } from "express";
 import path from 'node:path'
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url); 
+const __dirname = path.dirname(__filename); 
+
 import { existsThisIT, existsThisQAFile, insertIT, insertQAFile } from "../models/sgi";
 
 
@@ -13,7 +18,7 @@ export const handleUploadIT = async (req: Request, res: Response) => {
         const name = removeFileExtension(req?.file?.filename as string)
         const filePath: string = path.join(__dirname, `../_its/${req.file?.originalname}`)
         //pesquisando se já existe esse arquivo salvo na base de dados
-        const it = await existsThisIT(filePath) as { status: boolean }
+        const it = await existsThisIT(name) as { status: boolean }
         // se não exsitir deve inserir
         if (!it.status) {
             await insertIT(filePath, name)
@@ -23,6 +28,7 @@ export const handleUploadIT = async (req: Request, res: Response) => {
         res.status(200).json('Dados salvos!')
     } catch (error) {
         res.status(500).json(error)
+        console.log(error)
     }
 }
 

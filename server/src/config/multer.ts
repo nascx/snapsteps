@@ -54,7 +54,8 @@ export const uploadIT = multer({ storage: storageIT })
 
 const storageQualityFile = multer.diskStorage({
     destination: (req, file, callback) => {
-        const filePath: string = path.join(__dirname, '../_quality')
+        console.log('chamado')
+        const filePath: string = path.join(__dirname, '../quality')
         callback(null, filePath)
     },
     filename: function (req, file, callback) {
@@ -66,9 +67,6 @@ const storageQualityFile = multer.diskStorage({
 export const uploadQualityFile = multer({ storage: storageQualityFile })      
 
 // Para salvar os arquivos da qualidade
-
-
-
 export class Multer {
 
     private static storageQualityFile: multer.StorageEngine
@@ -77,7 +75,6 @@ export class Multer {
 
         Multer.storageQualityFile = multer.diskStorage({
             destination: (req, file, callback) => {
-                console.log('Foi chamado')
                 const filePath: string = path.join(__dirname, '../../_quality')
                 callback(null, filePath)
             },

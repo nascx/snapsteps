@@ -1,10 +1,10 @@
 import { db } from "../config/db";
 
-export const existsThisIT = (path: string) => {
+export const existsThisIT = async (name: string) => {
    try {
     return new Promise(async(resolve, reject) => {
-        const q = 'SELECT name FROM its WHERE path = ?'
-        await db.query(q, [path], (err, data) => {
+        const q = 'SELECT path FROM its WHERE name = ?'
+        await db.query(q, [name], (err, data) => {
             if (err) {
                 reject(err)
             }
@@ -20,7 +20,7 @@ export const existsThisIT = (path: string) => {
    } 
 }
 
-export const insertIT = (path: string, name: string) => {
+export const insertIT = async (path: string, name: string) => {
     try {
         return new Promise(async(resolve, reject) => {
             const q = 'INSERT INTO its (path, name) VALUES (?, ?)'
@@ -28,7 +28,8 @@ export const insertIT = (path: string, name: string) => {
                 if (err) {
                     reject(err)
                 }
-                if (data.affectedRows > 0) {
+                if (data) {
+                    console.log(data)
                     console.log('Arquivos inserido com sucesso na tabela its', data)
                     resolve(true)
                 } else {
