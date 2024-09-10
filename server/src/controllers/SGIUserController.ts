@@ -77,7 +77,7 @@ export class SGIUserController {
             await this.convertPdf2Image(filePath, code)
             // obtendo o título do arquivo
             // definindo o caminho aonde a imagem será salva
-            const imagePath = path.resolve(__dirname, `../_quality/${code}.png`)
+            const imagePath = path.resolve(__dirname, `../_quality/${code}.jpg`)
 
             const title = await this.getTitle(imagePath)
 
