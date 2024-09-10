@@ -27,7 +27,7 @@ export class SGIUserController {
             // pegando apenas a primeira página
             const page1buffer = await document.getPage(1)
             // definindo o caminho aonde a imagem será salva
-            const imagePath: string = path.join(__dirname, `../_quality/${imageName}.png`)
+            const imagePath: string = path.join(__dirname, `../_quality/${imageName}.jpg`)
             // salvando a imagem no disco rígido
             await fs.writeFileSync(imagePath, page1buffer);
             // retornando o caminho da imagem
