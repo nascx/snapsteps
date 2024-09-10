@@ -59,13 +59,18 @@ export class SGIUserController {
             }
         })
 
+        const startWithInpesionOrTest = /INSPEÇÃO|INSPECAO|TESTE/mi
+
         console.log(textFromImage)
-        if (textFromImage[homeApplianceIndex + 1] !== 'TÍTULO:') {
-            return textFromImage[homeApplianceIndex + 1]
-        } else if (textFromImage[titleIndex + 1] === '') {
-            return textFromImage[titleIndex + 2]
-        } else {
+
+        if (textFromImage[titleIndex + 1].match(startWithInpesionOrTest)) {
+            console.log('Depois de título')
             return textFromImage[titleIndex + 1]
+        } else if (textFromImage[homeApplianceIndex + 1].match(startWithInpesionOrTest)) {
+            console.log('Depois de eletrodomesticos')
+            return textFromImage[homeApplianceIndex + 1]
+        } else {
+            return textFromImage[titleIndex]
         }
         
         // retornando o título do arquivo
