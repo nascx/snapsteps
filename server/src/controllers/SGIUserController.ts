@@ -23,7 +23,7 @@ export class SGIUserController {
     static convertPdf2Image = async (filePath: string, imageName: string) => {
         try {
             // transformando o pdf em imagem
-            const document = await pdf(filePath, { scale: 4 });
+            const document = await pdf(filePath, { scale: 2 });
             // pegando apenas a primeira página
             const page1buffer = await document.getPage(1)
             // definindo o caminho aonde a imagem será salva
