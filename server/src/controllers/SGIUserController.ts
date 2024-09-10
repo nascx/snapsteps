@@ -45,6 +45,7 @@ export class SGIUserController {
         const result = await Tesseract.recognize(imagePath, 'por')
          // separando o array por quebra de linha 
          const textFromImage = await result.data.text.split('\n')
+         console.log(textFromImage)
          // achando o indice aonde vêm a palavra título: 
          // obs.: na sequência vem o título
          const titleIndex = await textFromImage.findIndex((text: string, i) => {
