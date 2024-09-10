@@ -60,8 +60,8 @@ export class SGIUserController {
         })
 
         console.log(textFromImage)
-        if (textFromImage[homeApplianceIndex] === 'TÍTULO:') {
-            return textFromImage[titleIndex + 2]
+        if (textFromImage[homeApplianceIndex] !== 'TÍTULO:') {
+            return textFromImage[titleIndex + 1]
         } else if (textFromImage[titleIndex + 1] === '') {
             return textFromImage[titleIndex + 2]
         } else {
