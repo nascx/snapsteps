@@ -71,7 +71,7 @@ export class SGIUserController {
              console.log('Depois de eletrodomesticos')
              return textFromImage[homeApplianceIndex + 1]
          } else {
-             return textFromImage[titleIndex]
+             return textFromImage[titleIndex + 1]
          }
 
         // retornando o título do arquivo
