@@ -61,7 +61,7 @@ export class SGIUserController {
 
         const startWithInpesionOrTest = /INSPEÇÃO|INSPECAO|TESTE/mi
 
-        console.log(textFromImage)
+        console.log({textFromImage, result})
 
         if (textFromImage[titleIndex + 1].match(startWithInpesionOrTest)) {
             console.log('Depois de título')
