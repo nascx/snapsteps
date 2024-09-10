@@ -53,7 +53,7 @@ export class SGIUserController {
         })
 
         const homeApplianceIndex = await textFromImage.findIndex((text: string, i) => {
-            const regex = /ELETRODOMÉSTICOS|ELETRODOMESTICOS:/gmi
+            const regex = /ELETRODOMÉSTICOS|ELETRODOMESTICOS/gmi
             if (text.match(regex)) {
                 return i
             }
