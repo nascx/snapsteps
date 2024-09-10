@@ -52,14 +52,24 @@ export class SGIUserController {
             }
         })
 
-        console.log(textFromImage)
+        const homeApplianceIndex = await textFromImage.findIndex((text: string, i) => {
+            const regex = /ELETRODOMÉSTICOS|ELETRODOMESTICOS:/gmi
+            if (text.match(regex)) {
+                return i
+            }
+        })
 
-        if (textFromImage[titleIndex + 1] === '') {
+        console.log(textFromImage)
+        if (textFromImage[homeApplianceIndex] === 'TÍTULO:') {
             return textFromImage[titleIndex + 2]
+        } else if (textFromImage[titleIndex + 1] === '') {
+            return textFromImage[titleIndex + 2]
+        } else {
+            return textFromImage[titleIndex + 1]
         }
         
         // retornando o título do arquivo
-        return textFromImage[titleIndex + 1]
+        
     }
 
     static saveFile = async (req: Request, res: Response) => {
