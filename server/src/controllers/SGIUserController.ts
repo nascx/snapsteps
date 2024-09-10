@@ -1,5 +1,5 @@
 // importação das dependencias
-import Tesseract from 'tesseract.js' // para pegar texto da imagem
+import Tesseract, { createWorker } from 'tesseract.js' // para pegar texto da imagem
 import fs from "node:fs"; //manipular arquivos 
 import { pdf } from "pdf-to-img"; //para transformar pdf em imagem
 import { Request, Response } from "express"; // para obter os tipos de req e res do express
@@ -23,11 +23,13 @@ export class SGIUserController {
     static convertPdf2Image = async (filePath: string, imageName: string) => {
         try {
             // transformando o pdf em imagem
-            const document = await pdf(filePath, { scale: 3 });
+            const document = await pdf(filePath, {
+                scale: 1.5
+            });
             // pegando apenas a primeira página
             const page1buffer = await document.getPage(1)
             // definindo o caminho aonde a imagem será salva
-            const imagePath: string = path.join(__dirname, `../_quality/${imageName}.jpg`)
+            const imagePath: string = path.join(__dirname, `../../_quality/${imageName}.bmp`)
             // salvando a imagem no disco rígido
             await fs.writeFileSync(imagePath, page1buffer);
             // retornando o caminho da imagem
@@ -38,43 +40,42 @@ export class SGIUserController {
     }
 
     static getTitle = async (imagePath: string) => {
+
         // obtendo os dados da imagem
-        const result = await Tesseract.recognize(imagePath, 'por', {
-        })
-        // separando o array por quebra de linha 
-        const textFromImage = await result.data.text.split('\n')
-        // achando o indice aonde vêm a palavra título: 
-        // obs.: na sequência vem o título
-        const titleIndex = await textFromImage.findIndex((text: string, i) => {
-            const regex = /TÍTULO:|TITULO:/gmi
-            if (text.match(regex)) {
-                return i
-            }
-        })
+        const result = await Tesseract.recognize(imagePath, 'por')
+         // separando o array por quebra de linha 
+         const textFromImage = await result.data.text.split('\n')
+         // achando o indice aonde vêm a palavra título: 
+         // obs.: na sequência vem o título
+         const titleIndex = await textFromImage.findIndex((text: string, i) => {
+             const regex = /TÍTULO:|TITULO:/gmi
+             if (text.match(regex)) {
+                 return i
+             }
+         })
+ 
+         const homeApplianceIndex = await textFromImage.findIndex((text: string, i) => {
+             const regex = /ELETRODOMÉSTICOS|ELETRODOMESTICOS/gmi
+             if (text.match(regex)) {
+                 return i
+             }
+         })
+ 
+         const startWithInpesionOrTest = /INSPEÇÃO|INSPECAO|TESTE/mi
+ 
 
-        const homeApplianceIndex = await textFromImage.findIndex((text: string, i) => {
-            const regex = /ELETRODOMÉSTICOS|ELETRODOMESTICOS/gmi
-            if (text.match(regex)) {
-                return i
-            }
-        })
+         if (textFromImage[titleIndex + 1].match(startWithInpesionOrTest)) {
+             console.log('Depois de título')
+             return textFromImage[titleIndex + 1]
+         } else if (textFromImage[homeApplianceIndex + 1].match(startWithInpesionOrTest)) {
+             console.log('Depois de eletrodomesticos')
+             return textFromImage[homeApplianceIndex + 1]
+         } else {
+             return textFromImage[titleIndex]
+         }
 
-        const startWithInpesionOrTest = /INSPEÇÃO|INSPECAO|TESTE/mi
-
-        console.log({textFromImage, result})
-
-        if (textFromImage[titleIndex + 1].match(startWithInpesionOrTest)) {
-            console.log('Depois de título')
-            return textFromImage[titleIndex + 1]
-        } else if (textFromImage[homeApplianceIndex + 1].match(startWithInpesionOrTest)) {
-            console.log('Depois de eletrodomesticos')
-            return textFromImage[homeApplianceIndex + 1]
-        } else {
-            return textFromImage[titleIndex]
-        }
-        
         // retornando o título do arquivo
-        
+
     }
 
     static saveFile = async (req: Request, res: Response) => {
@@ -87,12 +88,12 @@ export class SGIUserController {
 
             // transformar o pdf em imagem
             // definindo caminho do arquivo
-            const filePath = path.resolve(__dirname, `../_quality/${filename}`)
+            const filePath = path.resolve(__dirname, `../../_quality/${filename}`)
 
             await this.convertPdf2Image(filePath, code)
             // obtendo o título do arquivo
             // definindo o caminho aonde a imagem será salva
-            const imagePath = path.resolve(__dirname, `../_quality/${code}.jpg`)
+            const imagePath = path.resolve(__dirname, `../../_quality/${code}.bmp`)
 
             const title = await this.getTitle(imagePath)
 
