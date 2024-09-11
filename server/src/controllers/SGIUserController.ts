@@ -1,5 +1,5 @@
 // importação das dependencias
-import Tesseract, { createWorker } from 'tesseract.js' // para pegar texto da imagem
+import Tesseract from 'tesseract.js' // para pegar texto da imagem
 import fs from "node:fs"; //manipular arquivos 
 import { pdf } from "pdf-to-img"; //para transformar pdf em imagem
 import { Request, Response } from "express"; // para obter os tipos de req e res do express
@@ -24,14 +24,15 @@ export class SGIUserController {
         try {
             // transformando o pdf em imagem
             const document = await pdf(filePath, {
-                scale: 1.5
+                scale: 15
             });
             // pegando apenas a primeira página
             const page1buffer = await document.getPage(1)
             // definindo o caminho aonde a imagem será salva
-            const imagePath: string = path.join(__dirname, `../_quality/${imageName}.bmp`)
+            const imagePath = path.resolve(__dirname, `../_quality/${imageName}.png`)
             // salvando a imagem no disco rígido
             await fs.writeFileSync(imagePath, page1buffer);
+
             // retornando o caminho da imagem
             return imagePath
         } catch (error) {
@@ -40,44 +41,34 @@ export class SGIUserController {
     }
 
     static getTitle = async (imagePath: string) => {
+        try {
+            // Processando o OCR com Tesseract
+            const result = await Tesseract.recognize(imagePath, 'por');
+            const textFromImage = result.data.text.split('\n').map(line => line.trim()); // Remover espaços em branco
 
-        // obtendo os dados da imagem
-        const result = await Tesseract.recognize(imagePath, 'por')
-         // separando o array por quebra de linha 
-         const textFromImage = await result.data.text.split('\n')
-         console.log(textFromImage)
-         // achando o indice aonde vêm a palavra título: 
-         // obs.: na sequência vem o título
-         const titleIndex = await textFromImage.findIndex((text: string, i) => {
-             const regex = /TÍTULO:|TITULO:/gmi
-             if (text.match(regex)) {
-                 return i
-             }
-         })
- 
-         const homeApplianceIndex = await textFromImage.findIndex((text: string, i) => {
-             const regex = /ELETRODOMÉSTICOS|ELETRODOMESTICOS/gmi
-             if (text.match(regex)) {
-                 return i
-             }
-         })
- 
-         const startWithInpesionOrTest = /INSPEÇÃO|INSPECAO|TESTE/mi
- 
+            // Buscando pelo índice do título
+            const titleIndex = textFromImage.findIndex(text => /TÍTULO:|TITULO:/gmi.test(text));
+            const homeApplianceIndex = textFromImage.findIndex(text => /ELETRODOMÉSTICOS|ELETRODOMESTICOS/gmi.test(text));
 
-         if (textFromImage[titleIndex + 1].match(startWithInpesionOrTest)) {
-             console.log('Depois de título')
-             return textFromImage[titleIndex + 1]
-         } else if (textFromImage[homeApplianceIndex + 1].match(startWithInpesionOrTest)) {
-             console.log('Depois de eletrodomesticos')
-             return textFromImage[homeApplianceIndex + 1]
-         } else {
-             return textFromImage[titleIndex + 1]
-         }
+            const startWithInpesionOrTest = /INSPEÇÃO|INSPECAO|TESTE/mi;
 
-        // retornando o título do arquivo
-
-    }
+            // Verificando se o próximo texto após o título corresponde aos padrões
+            if (titleIndex !== -1 && textFromImage[titleIndex + 1]?.match(startWithInpesionOrTest)) {
+                return textFromImage[titleIndex + 1];
+            } else if (homeApplianceIndex !== -1 && textFromImage[homeApplianceIndex + 1]?.match(startWithInpesionOrTest)) {
+                return textFromImage[homeApplianceIndex + 1];
+            } else if (titleIndex !== -1 && textFromImage[titleIndex + 1] === '') {
+                return textFromImage[titleIndex + 2]; // Evitar espaço vazio
+            } else if (titleIndex !== -1) {
+                return textFromImage[titleIndex + 1];
+            } else {
+                return 'Título não encontrado';
+            }
+        } catch (error) {
+            console.error('Erro ao processar OCR:', error);
+            throw new Error('Falha ao processar OCR');
+        }
+    };
 
     static saveFile = async (req: Request, res: Response) => {
         try {
@@ -94,7 +85,7 @@ export class SGIUserController {
             await this.convertPdf2Image(filePath, code)
             // obtendo o título do arquivo
             // definindo o caminho aonde a imagem será salva
-            const imagePath = path.resolve(__dirname, `../_quality/${code}.bmp`)
+            const imagePath = path.resolve(__dirname, `../_quality/${code}.png`)
 
             const title = await this.getTitle(imagePath)
 

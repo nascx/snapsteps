@@ -2,11 +2,11 @@ import { host } from "./urlApi"
 
 export const linksQA = [
     {
-        label: 'Pesquisar IT',
+        label: 'Visualizar IT da Qualidade',
         url: `${host}/qa`
     },
     {
-        label: 'Visualizar IT da produção',
+        label: 'Visualizar IT da Produção',
         url: `${host}/qa/get-pdf`
     },
 ]
@@ -17,7 +17,7 @@ export const linksProd = [
         url: `${host}/prod/get-list`
     },
     {
-        label: 'Visualizar IT',
+        label: 'Visualizar IT da Produção',
         url: `${host}/prod/get-pdf`
     },
     {
@@ -32,7 +32,7 @@ export const linksEng = [
         url: `${host}/eng/list-upload`
     },
     {
-        label: 'Visualizar IT',
+        label: 'Visualizar IT da Produção',
         url: `${host}/eng/get-pdf`
     },
 ]
@@ -43,11 +43,11 @@ export const linksSGI = [
         url: `${host}/sgi/upload-it`
     },
     {
-        label: 'Salvar IT do Qualidade',
+        label: 'Salvar IT da Qualidade',
         url: `${host}/sgi/upload-quality-file`
     },
     {
-        label: 'Visualizar IT da produção',
+        label: 'Visualizar IT da Produção',
         url: `${host}/sgi/get-pdf`
     },
     {

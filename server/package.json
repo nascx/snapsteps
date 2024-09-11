@@ -7,10 +7,10 @@
   "scripts": {
     "start": "tsx --watch src/snapsteps.ts",
     "connection-db": "tsx --watch src/config/db.ts",
-    "test-pdf": "tsx --watch src/views/teste.ts",   
+    "test-pdf": "tsx --watch src/views/teste.ts",
     "build": "tsup src"
   },
-  "keywords": [], 
+  "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
@@ -21,8 +21,10 @@
     "exceljs": "^4.4.0",
     "express": "^4.19.2",
     "html-pdf": "^3.0.1",
+    "jimp": "^1.6.0",
     "multer": "^1.4.5-lts.1",
     "mysql": "^2.18.1",
+    "node-tesseract-ocr": "^2.2.1",
     "pdf-lib": "^1.17.1",
     "pdf-parse": "^1.1.1",
     "pdf-table-extractor": "^1.0.3",
