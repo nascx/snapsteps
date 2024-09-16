@@ -6,10 +6,10 @@ import { getPage } from "./getPage";
 import { generateObs } from "./generateObs";
 
 export const sendPdf = async (req: Request, res: Response) => {
-    try {
-        const { model, product, line } = req.query;
 
-        console.log(model, product, line)
+    try {
+
+        const { model, product, line } = req.query;
         
         const content = await exsitsThisListInProductionListsByModelLineAndProduct(model as string, product as string, line as string) as { status: boolean, content: string };
 
@@ -31,8 +31,6 @@ export const sendPdf = async (req: Request, res: Response) => {
 
            
             const newPdfDoc = await PDFDocument.create();
-
-            console.log(postsUseds)
 
             for (const post of postsUseds) {
                 // Gera os bytes do PDF
