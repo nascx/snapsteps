@@ -175,12 +175,13 @@ const GetPDF = () => {
     const viewIT = async () => {
         if (model.value !== '' && product.value !== '' && line.value !== '' && post.value !== '') {
             setLoading(true)
-            await axios.get(`${urlAPi}/pdf`, {
+            await axios.get(`${urlAPi}/pdf-by-post`, {
                 responseType: 'arraybuffer',
                 params: {
                     model: model.value,
                     product: product.value,
-                    line: line.value
+                    line: line.value,
+                    post: post.value
                 } // Importante para obter a resposta como ArrayBuffer
             }).then((res) => {
                 const pdfBlob = new Blob([res.data], { type: 'application/pdf' });
