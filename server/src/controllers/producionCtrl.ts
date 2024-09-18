@@ -7,7 +7,7 @@ import {
     searchByModelAndProductOptions,
     searchByModelAndProductOptionsAndLine,
     updateListInProductionLists
-} from "../models/production";
+} from "../models/ProdUser";
 import { exsitsListsWithThisModelAndProductInProductionLists, updateContentInProductionLists } from "../models/engineer";
 import { convertJsonToExcel } from "../commonFunctions/convertJsonToExcel";
 import { convertExcelToJsonWithoutAlterLine, convertExcelToJson } from "../commonFunctions/convertExcelToJson";
@@ -132,34 +132,3 @@ interface HashStore {
     [key: string]: { it: string, page: number }[];
 }
 
-// para devolver a IT com base na lista
-/* export const sendIT = async (req: Request, res: Response) => {
-    try {
-        // obtendo as informações da requisição
-        const { model, product, line } = req.query
-        // verificando se essa combinação de informações existe
-        const prodList = await exsitsThisListInProductionLists(name as string, model as string, product as string, line as string) as { status: boolean, content: string }
-        // se existir deve pegar o conteúdo
-        if (prodList.status) {
-            // transformando em json
-            const jsonData = JSON.parse(prodList.content)
-            // criando um objeto para salvar as informações de cada it
-            const postInfos: HashStore = {}
-            const posts: string[] = []
-            jsonData.map((row: { it: string, page: string, post: string }, i: number) => {
-                if (i > 0) {
-                    if (!postInfos[row.post]) {
-                        postInfos[row.post] = []
-                        postInfos[row.post].push({ it: row.it, page: Number(row.page) })
-                        posts.push(String(row.post))
-                    } else {
-                        postInfos[row.post].push({ it: row.it, page: Number(row.page) })
-                    }
-                }
-            })
-            res.status(200).json({ postInfos, posts })
-        }
-    } catch (error) {
-        res.status(500).json(error)
-    }
-} */

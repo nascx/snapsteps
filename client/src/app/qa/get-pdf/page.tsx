@@ -13,62 +13,86 @@ const GetPDF = () => {
 
     const [loading, setLoading] = useState<boolean>(false)
 
-    const [modelOptions, setModelOptions] = useState()
-    const [productOptions, setProductOptions] = useState()
+    const [modelOptions, setModelOptions] = useState<any>()
+    const [productOptions, setProductOptions] = useState<any>()
 
-    const [model, setModel] = useState<any>()
-    const handleModelChange = (e: string) => {
+    const [model, setModel] = useState<any>({ label: 'Selecione o modelo', value: '' })
+
+    const handleModelChange = async (e: { label: string, value: string }) => {
         setModel(e)
+        setLine({ label: 'Selecione a linha', value: '' })
+        setProduct({ label: 'Selecione o produto/processo' })
+        setLineOptions([])
+        setProductOptions([])
+        await axios.get(`${urlAPi}/options/products`, {
+            params: {
+                model: e.value
+            }
+        }).then((res) => {
+            const products = res.data
+            setProductOptions(products)
+        })
     }
 
-    const [product, setProduct] = useState<any>()
-    const handleProductChange = (e: string) => {
-        setProduct(e)
-    }
-
-    const [lineOptions, setLineOptions] = useState()
-    const [line, setLine] = useState<any>()
+    const [lineOptions, setLineOptions] = useState<any>()
+    const [line, setLine] = useState<any>({ label: 'Selecione a linha', value: '' })
     const handleLineChange = (e: string) => {
         setLine(e)
     }
-    useEffect(() => {
-        axios.get(`${urlAPi}/get-model-and-product-options`).then((res) => {
-            const models = res.data.models
-            const products = res.data.products
-            setModelOptions(models)
-            setProductOptions(products)
-        })
-        axios.get(`${urlAPi}/production/get-options-to-pdf`).then((res) => {
-            const lines = res.data.lines
+
+    const [product, setProduct] = useState<any>({ label: 'Selecione o produto/processo', value: '' })
+
+    const handleProductChange = async (e: { label: string, value: string }) => {
+        setProduct(e)
+        setLine({ label: 'Selecione a linha', value: '' })
+        setLineOptions([])
+        await axios.get(`${urlAPi}/options/lines`, {
+            params: {
+                model: model.value,
+                product: e.value
+            }
+        }).then((res) => {
+            const lines = res.data
             setLineOptions(lines)
+        })
+    }
+
+
+    useEffect(() => {
+        axios.get(`${urlAPi}/options/models`).then((res) => {
+            const models = res.data
+            setModelOptions(models)
         })
     }, [])
 
     const viewIT = async () => {
-        setLoading(true)
-        const response = await axios.get(`${urlAPi}/pdf`, {
-            responseType: 'arraybuffer',
-            params: {
-                model: model.value,
-                product: product.value,
-                line: line.value
-            } // Importante para obter a resposta como ArrayBuffer
-        }).then((res) => {
-            // Cria um Blob a partir da resposta
-            const pdfBlob = new Blob([res.data], { type: 'application/pdf' });
+        if (model.value !== '' && product.value !== '' && line.value !== '') {
+            setLoading(true)
+            await axios.get(`${urlAPi}/pdf`, {
+                responseType: 'arraybuffer',
+                params: {
+                    model: model.value,
+                    product: product.value,
+                    line: line.value
+                } // Importante para obter a resposta como ArrayBuffer
+            }).then((res) => {
+                const pdfBlob = new Blob([res.data], { type: 'application/pdf' });
+                // Cria uma URL temporária para o Blob
+                const pdfUrl = URL.createObjectURL(pdfBlob);
 
-            // Cria uma URL temporária para o Blob
-            const pdfUrl = URL.createObjectURL(pdfBlob);
-
-            // Abre o PDF em uma nova aba
-            window.open(pdfUrl);
-            setLoading(false)
-        }).catch((err) => {
-            setLoading(false)
-            console.log("Erro: ", err)
-            toast.error('Erro ao obter a lista, verifique se os parâmetros estão corretos ou se a IT usada já está no banco de dados!')
-        });;
+                // Abre o PDF em uma nova aba
+                window.open(pdfUrl);
+                setLoading(false)
+            }).catch((err) => {
+                setLoading(false)
+                console.log("Erro: ", err)
+                toast.error('Erro ao obter a lista, verifique se os parâmetros estão corretos ou se a IT usada já está no banco de dados!')
+            })
+        } else {
+            toast.error('Preencha todos os campos!')
+        }
     }
+
     return (
         <div className='h-screen w-full flex justify-center items-center flex-col'>
             <Navbar links={linksQA} />

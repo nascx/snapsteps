@@ -1,6 +1,6 @@
 import { PDFDocument } from "pdf-lib";
 import { Request, Response } from "express";
-import { exsitsThisListInProductionListsByModelLineAndProduct } from "../models/production";
+import { exsitsThisListInProductionListsByModelLineAndProduct } from "../models/ProdUser";
 import { generateCover } from "./generateCover";
 import { getPage } from "./getPage";
 import { generateObs } from "./generateObs";

@@ -11,53 +11,78 @@ import { linksProd } from '@/links'
 
 const GetList = () => {
 
-    const [modelOptions, setModelOptions] = useState()
-    const [productOptions, setProductOptions] = useState()
-    const [lineOptions, setLineOtions] = useState()
+    const [modelOptions, setModelOptions] = useState<any>()
+    const [productOptions, setProductOptions] = useState<any>()
+    const [lineOptions, setLineOptions] = useState<any>()
 
-    const [model, setModel] = useState<any>()
-    const handleModelChange = (e: string) => {
+    const [model, setModel] = useState<any>({ label: 'Selecione o modelo', value: '' })
+
+    const handleModelChange = async (e: { label: string, value: string }) => {
         setModel(e)
+        setLine({label: 'Selecione a linha', value: ''})
+        setProduct({label: 'Selecione o produto', value: ''})
+        setLineOptions([])
+        setProductOptions([])
+        await axios.get(`${urlAPi}/options/products`, {
+            params: {
+                model: e.value
+            }
+        }).then((res) => {
+            const products = res.data
+            setProductOptions(products)
+        })
     }
 
-    const [product, setProduct] = useState<any>()
-    const handleProductChange = (e: string) => {
+    const [product, setProduct] = useState<any>({ label: 'Selecione o produto', value: '' })
+
+    const handleProductChange = async (e: { label: string, value: string }) => {
         setProduct(e)
+        setLine({label: 'Selecione a linha', value: ''})
+        setLineOptions([])
+        await axios.get(`${urlAPi}/options/lines`, {
+            params: {
+                model: model.value,
+                product: e.value
+            }
+        }).then((res) => {
+            const lines = res.data
+            setLineOptions(lines)
+        })
     }
 
-    const [line, setLine] = useState<any>()
+    const [line, setLine] = useState<any>({ label: 'Selecione a linha', value: '' })
     const handleLineChange = (e: string) => {
         setLine(e)
     }
 
     useEffect(() => {
-        axios.get(`${urlAPi}/get-model-and-product-options`).then((res) => {
-            const models = res.data.models
-            const products = res.data.products
-            const lines = res.data.lines
+        axios.get(`${urlAPi}/options/models`).then((res) => {
+            const models = res.data
             setModelOptions(models)
-            setProductOptions(products)
-            setLineOtions(lines)
         })
     }, [])
 
     const downloadList = async () => {
-        try {
-            await axios.get(`${urlAPi}/prod/download-list`, {
-                responseType: 'blob',
-                params: {
-                    model: model.value,
-                    product: product.value,
-                    line: line.value
-                },
-            }).then((res) => {
-                const blob = new Blob([res.data]);
-                console.log(res.headers['content-type'])
-                saveAs(blob, `${res.headers['content-type']}.xlsx`);
-            })
-        } catch (err) {
-            toast.error('Erro ao selecionar lista com esses parâmetros')
-            console.log("Erro: ", err)
+        if (model.value !== '' && product.value !== '' && line.value !== '') {
+            try {
+                await axios.get(`${urlAPi}/prod/download-list`, {
+                    responseType: 'blob',
+                    params: {
+                        model: model.value,
+                        product: product.value,
+                        line: line.value
+                    },
+                }).then((res) => {
+                    const blob = new Blob([res.data]);
+                    console.log(res.headers['content-type'])
+                    saveAs(blob, `${res.headers['content-type']}.xlsx`);
+                })
+            } catch (err) {
+                toast.error('Erro ao selecionar lista com esses parâmetros')
+                console.log("Erro: ", err)
+            }
+        } else {
+            toast.error('Preencha todos os campos!')
         }
     }
 

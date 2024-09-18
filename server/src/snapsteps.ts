@@ -14,6 +14,7 @@ import { sendQAFile } from './views/sendQAfile'
 import { Auth } from './controllers/Auth'
 import { Multer, uploadQualityFile } from '../src/config/multer'
 import { SGIUserController } from './controllers/SGIUserController'
+import { ProdUserViews } from './views/ProdUserViews'
 config()
 
 const snapsteps = express()
@@ -52,6 +53,11 @@ snapsteps.post(
 snapsteps.get('/qa/get-qa-file-options', SGIUserController.sendQualityFilesOptions)
 
 snapsteps.get('/qa/view-it', sendQAFile)
+
+// para as opções
+snapsteps.get('/options/models', ProdUserViews.getModelOptions)
+snapsteps.get('/options/products', ProdUserViews.getProductOptionsByModel)
+snapsteps.get('/options/lines', ProdUserViews.getLinesOptionsByModelAndProduct)
 
 const port = process.env.PORT || 4322
 

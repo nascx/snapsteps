@@ -255,4 +255,127 @@ export const updateListInProductionLists = (name: string, model: string, product
     }
 }
 
+export class ProdUser {
+    // para procurar por opções de modelos
+    static findModelsOptions = async () => {
+        try {
+            return new Promise(async (resolve, reject) => {
+                const q = 'SELECT model FROM production_lists'
+                await db.query(q, (err, data) => {
+                    if (err) {
+                        console.log({message: 'Erro ao buscar por opções de Modelos', error: err})
+                        reject(err)
+                    }
 
+                    const models: { [key: string]: { value: string, label: string } } = {}
+
+                    // para filtrar apenas os modelos
+                    const filteredModels = data.map((a: { model: string }) => {
+                        return { model: a.model.toUpperCase() }
+                    })
+
+                    const sortedModels = filteredModels.sort((a: { model: string }, b: { model: string }) => {
+                        return a.model.localeCompare(b.model)
+                    })
+
+                    if (data && data.length > 0) {
+                        sortedModels.map((row: { model: string }) => {
+                            if (!models[row.model]) {
+                                models[row.model] = { value: row.model, label: row.model }
+                            }
+                            return { label: row.model, value: row.model }
+                        })
+                    } else {
+                        return reject(false)
+                    }
+
+                    resolve(Object.keys(models).map(key => models[key]))
+                })
+            })
+        } catch (error) {
+            throw error
+        }
+    }
+
+    // para procurar por opções de productos
+    static findProductsOptionsByModel = async (model: string) => {
+        try {
+            return new Promise(async (resolve, reject) => {
+                const q = 'SELECT product FROM production_lists WHERE model = ?'
+                await db.query(q, [model], (err, data) => {
+                    if (err) {
+                        console.log({message: 'Erro ao buscar por opções de Produtos por modelo', error: err})
+                        reject(err)
+                    }
+
+                    const products: { [key: string]: { value: string, label: string } } = {}
+
+                    // para filtrar apenas os modelos
+                    const filteredProducts = data.map((a: { product: string }) => {
+                        return { product: a.product.toUpperCase() }
+                    })
+
+                    const sortedProducts = filteredProducts.sort((a: { product: string }, b: { product : string }) => {
+                        return a.product.localeCompare(b.product)
+                    })
+
+                    if (data && data.length > 0) {
+                        sortedProducts.map((row: { product: string }) => {
+                            if (!products[row.product]) {
+                                products[row.product] = { value: row.product, label: row.product }
+                            }
+                            return { label: row.product, value: row.product }
+                        })
+                    } else {
+                        return reject(false)
+                    }
+
+                    resolve(Object.keys(products).map(key => products[key]))
+                })
+            })
+        } catch (error) {
+            throw error
+        }
+    }
+
+    // para buscar opções de linhas baseadas nas escolhas de modelo e produto
+    static findLinesOptionsByModelAndProduct = async (model: string, product: string) => {
+        try {
+            return new Promise(async (resolve, reject) => {
+                const q = 'SELECT line FROM production_lists WHERE model = ? AND product = ?'
+                await db.query(q, [model, product], (err, data) => {
+                    if (err) {
+                        console.log({message: 'Erro ao buscar por opções de linhas por modelo e produto', error: err})
+                        reject(err)
+                    }
+
+                    const lines: { [key: string]: { value: string, label: string } } = {}
+
+                    // para filtrar apenas os modelos
+                    const filteredLines = data.map((a: { line: string }) => {
+                        return { line: a.line.toUpperCase() }
+                    })
+
+                    const sortedLines = filteredLines.sort((a: { line: string }, b: { line : string }) => {
+                        return a.line.localeCompare(b.line)
+                    })
+
+                    if (data && data.length > 0) {
+                        sortedLines.map((row: { line: string }) => {
+                            if (!lines[row.line]) { 
+                                lines[row.line] = { value: row.line, label: row.line }
+                            }
+                            return { label: row.line, value: row.line }
+                        })
+                    } else {
+                        return reject(false)
+                    }
+
+                    resolve(Object.keys(lines).map(key => lines[key]))
+                })
+            })
+        } catch (error) {
+            throw error
+        }
+    }
+}
