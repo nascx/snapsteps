@@ -10,7 +10,7 @@ export const generateObs = async (operations: string) => {
     
     // Carrega uma fonte
     const font = await pdfDoc.embedFont(StandardFonts.CourierBold);
-    const fontSize = 35;
+    const fontSize = 15;
     
     // Obtém as dimensões da página
     const { width, height } = page.getSize();

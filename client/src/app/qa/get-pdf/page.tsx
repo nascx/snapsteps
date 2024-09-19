@@ -68,7 +68,7 @@ const GetPDF = () => {
     const viewIT = async () => {
         if (model.value !== '' && product.value !== '' && line.value !== '') {
             setLoading(true)
-            await axios.get(`${urlAPi}/pdf`, {
+            await axios.get(`${urlAPi}/prod/get-production-it`, {
                 responseType: 'arraybuffer',
                 params: {
                     model: model.value,

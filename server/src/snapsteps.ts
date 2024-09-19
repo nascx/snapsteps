@@ -59,6 +59,9 @@ snapsteps.get('/options/models', ProdUserViews.getModelOptions)
 snapsteps.get('/options/products', ProdUserViews.getProductOptionsByModel)
 snapsteps.get('/options/lines', ProdUserViews.getLinesOptionsByModelAndProduct)
 
+// para gerar a it de produção com paralelismo 
+snapsteps.get('/prod/get-production-it', ProdUserViews.sendProductionIT)
+
 const port = process.env.PORT || 4322
 
 snapsteps.listen(port, () => {
