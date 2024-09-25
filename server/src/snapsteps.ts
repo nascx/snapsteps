@@ -6,13 +6,12 @@ import { config  } from 'dotenv'
   
 import { uploadEngineeringLists, uploadIT, uploadProductionListsMulter } from '../src/config/multer'
 
-import { downloadList, getModelAndProductOptions, getModelProductOptionsAndLine, uploadProductionLists } from './controllers/producionCtrl'
+import { ProdUserController, } from './controllers/ProdUserController'
 import { handleUploadIT } from './controllers/sgiCtrl'
-import { sendPdf } from './views/sendCompletePdf'
 import { sendPdfByPost } from './views/sendPDfByPost'
 import { sendQAFile } from './views/sendQAfile'
 import { Auth } from './controllers/Auth'
-import { Multer, uploadQualityFile } from '../src/config/multer'
+import { uploadQualityFile } from '../src/config/multer'
 import { SGIUserController } from './controllers/SGIUserController'
 import { ProdUserViews } from './views/ProdUserViews'
 config()
@@ -25,19 +24,17 @@ snapsteps.use(cors())
 
 snapsteps.get('/auth', Auth.credentialCheck)
 
-snapsteps.post('/eng/list-upload', uploadEngineeringLists.single('list'), uploadProductionLists )
+snapsteps.post('/eng/list-upload', uploadEngineeringLists.single('list'), ProdUserController.uploadProductionLists )
 
-snapsteps.get('/prod/download-list', downloadList)
+snapsteps.get('/prod/download-list', ProdUserController.downloadList)
 
-snapsteps.get('/get-model-and-product-options', getModelAndProductOptions)
+snapsteps.get('/get-model-and-product-options', ProdUserController.getModelAndProductOptions)
 
-snapsteps.post('/production/upload-file', uploadProductionListsMulter.single('prod-list'), uploadProductionLists)
+snapsteps.post('/production/upload-file', uploadProductionListsMulter.single('prod-list'), ProdUserController.uploadProductionLists)
 
 snapsteps.post('/sgi/upload-it', uploadIT.single('it'), handleUploadIT)
 
-snapsteps.get('/production/get-options-to-pdf', getModelProductOptionsAndLine)
-
-snapsteps.get('/pdf', sendPdf)
+snapsteps.get('/production/get-options-to-pdf', ProdUserController.getModelProductOptionsAndLine)
 
 snapsteps.get('/pdf-by-post', sendPdfByPost)
 

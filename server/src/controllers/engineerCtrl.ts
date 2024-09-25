@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 
-import { convertExcelToJson, convertExcelToJsonWithoutAlterLine } from '../commonFunctions/convertExcelToJson'
+import { convertExcelToJson, convertExcelToJsonWithoutAlterLine } from '../services/convertExcelToJson'
 
 import path from 'node:path'
 
@@ -22,7 +22,7 @@ import {
 export const createList = async (req: Request, res: Response) => {
     try {
         // prgando o caminho do arquivo que foi enviado
-        const filePath: string = path.resolve(__dirname, `../00_engineering_lists/${req.file?.originalname}`)
+        const filePath: string = path.resolve(__dirname, `../files/production_its/${req.file?.originalname}`)
         // convertendo o conteúdo do arquivo em json
         const jsonData = convertExcelToJsonWithoutAlterLine(filePath)
         // pegando o modelo desse conteúdo

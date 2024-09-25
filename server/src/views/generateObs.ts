@@ -20,6 +20,7 @@ export const generateObs = async (operations: string) => {
     page.drawText(`Na página abaixo vide:`, {
         x: 200,
         y: 400,
+        
         size: fontSize,
         font,
     });

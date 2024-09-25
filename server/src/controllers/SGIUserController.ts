@@ -29,7 +29,7 @@ export class SGIUserController {
             // pegando apenas a primeira página
             const page1buffer = await document.getPage(1)
             // definindo o caminho aonde a imagem será salva
-            const imagePath = path.resolve(__dirname, `../_quality/${imageName}.png`)
+            const imagePath = path.resolve(__dirname, `../files/quality/${imageName}.png`)
             // salvando a imagem no disco rígido
             await fs.writeFileSync(imagePath, page1buffer);
 
@@ -80,12 +80,12 @@ export class SGIUserController {
 
             // transformar o pdf em imagem
             // definindo caminho do arquivo
-            const filePath = path.resolve(__dirname, `../_quality/${filename}`)
+            const filePath = path.resolve(__dirname, `../files/quality/${filename}`)
 
             await this.convertPdf2Image(filePath, code)
             // obtendo o título do arquivo
             // definindo o caminho aonde a imagem será salva
-            const imagePath = path.resolve(__dirname, `../_quality/${code}.png`)
+            const imagePath = path.resolve(__dirname, `../files/quality/${code}.png`)
 
             const title = await this.getTitle(imagePath)
 

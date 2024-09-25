@@ -1,6 +1,6 @@
 import { PDFDocument } from "pdf-lib";
 import { Request, Response } from "express";
-import { exsitsThisListInProductionListsByModelLineAndProduct } from "../models/ProdUser";
+import { ProdUser } from "../models/ProdUser";
 import { generateCover } from "./generateCover";
 import { getPage } from "./getPage";
 import { generateObs } from "./generateObs";
@@ -9,7 +9,7 @@ export const sendPdfByPost = async (req: Request, res: Response) => {
     try {
         const { model, product, line, post } = req.query;
 
-        const content = await exsitsThisListInProductionListsByModelLineAndProduct(model as string, product as string, line as string) as { status: boolean, content: string };
+        const content = await ProdUser.exsitsThisListInProductionListsByModelLineAndProduct(model as string, product as string, line as string) as { status: boolean, content: string };
 
         if (content.status) {
             
