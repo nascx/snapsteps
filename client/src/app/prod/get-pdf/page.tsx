@@ -86,7 +86,7 @@ const GetPDF = () => {
             }).catch((err) => {
                 setLoading(false)
                 console.log("Erro: ", err)
-                toast.error('Erro ao obter a IT, verifique se a lista está preenchida corretamente!')
+                toast.error('Erro ao obter a IT. Verifique se a lista está correta!')
             })
         } else {
             toast.error('Preencha todos os campos!')
