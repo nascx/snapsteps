@@ -12,7 +12,7 @@ export const sendPdfByPost = async (req: Request, res: Response) => {
         const content = await ProdUser.exsitsThisListInProductionListsByModelLineAndProduct(model as string, product as string, line as string) as { status: boolean, content: string };
 
         if (content.status) {
-            
+
             const jsonData = JSON.parse(content.content);
             const postsContent: { [key: string]: { it: string, page: number, operations: string }[] } = {};
             const postsUseds: string[] = [post as string];
@@ -30,6 +30,7 @@ export const sendPdfByPost = async (req: Request, res: Response) => {
             const newPdfDoc = await PDFDocument.create();
 
             for (const post of postsUseds) {
+
                 // Gera os bytes do PDF
                 const pdfBytes = await generateCover(post);
 
@@ -41,6 +42,10 @@ export const sendPdfByPost = async (req: Request, res: Response) => {
 
                 // Adiciona a página copiada ao novo PDF
                 newPdfDoc.addPage(existingPage);
+
+                Object.keys(postsContent).forEach(key => {
+                    postsContent[key].sort((a, b) => a.operations.localeCompare(b.operations));
+                });
 
                 const pdf = postsContent[post];
 

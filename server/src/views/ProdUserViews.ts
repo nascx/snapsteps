@@ -3,9 +3,10 @@ import { Request, Response } from "express";
 import path from 'node:path'
 import fs from 'node:fs'
 import { fileURLToPath } from 'url';
-import { PDFButton } from "pdf-lib";
+import { ProdUserController } from "@src/controllers/ProdUserController";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+import moment from "moment";
 
 export class ProdUserViews {
 
@@ -59,12 +60,22 @@ export class ProdUserViews {
                 model as string, product as string, line as string
             ) as { status: boolean, content: string, name: string, latestUpdated: string };
 
+
+            if (content.latestUpdated === '00/00/0000') {
+                const latestUpdatedDate = moment().format('DD/MM/YYYY')
+                await ProdUser.updateLatestUpdatedDate(content.name, 'loading')
+                await ProdUserController.loadProductionIT(model, product, line)
+                await ProdUser.updateLatestUpdatedDate(content.name, latestUpdatedDate)
+            }
+
             if (content.latestUpdated === 'error') {
                 return false
             }
 
+
+
             if (content.latestUpdated !== 'loading') {
-                const pdfBuffer = fs.readFileSync(path.resolve(__dirname, `../files/production_its/${content.name}.pdf`))
+                const pdfBuffer = fs.readFileSync(path.resolve(__dirname, `../../files/production_its/${content.name}.pdf`))
                 return pdfBuffer
             } else {
                 return new Promise((resolve) => {
@@ -74,6 +85,8 @@ export class ProdUserViews {
                     }, 5000);
                 });
             }
+
+
         } catch (error) {
             console.log(error)
             return false
@@ -85,9 +98,9 @@ export class ProdUserViews {
             const { model, product, line } = req.query;
 
             const pdfBuffer = await this.getProductionITUploaded(model as string, product as string, line as string) as Buffer
-            
+
             if (!pdfBuffer) {
-                return res.status(400).json({message: 'Erro ao processar o arquivo, por favor verifique se a lista está correta!'})
+                return res.status(400).json({ message: 'Erro ao processar o arquivo, por favor verifique se a lista está correta!' })
             }
 
             res.setHeader('Content-Type', 'application/pdf');

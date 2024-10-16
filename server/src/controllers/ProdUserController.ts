@@ -62,15 +62,15 @@ export class ProdUserController {
 
         if (content.status) {
             const jsonData = JSON.parse(content.content);
-            const postsContent: { [key: string]: { it: string, page: number, operations: string }[] } = {};
+            const postsContent: { [key: string]: { it: string, page: number, operations: string, sequence: number }[] } = {};
             const postsUseds: string[] = [];
-
-            jsonData.forEach((element: { post: string, it: string, page: number, operations: string }, i: number) => {
+            console.log(jsonData)
+            jsonData.forEach((element: { post: string, it: string, page: number, operations: string, sequence: number }, i: number) => {
                 if (i > 0) {
                     if (postsContent[element.post]) {
-                        postsContent[element.post].push({ it: element.it, page: element.page, operations: element.operations ?? '' });
+                        postsContent[element.post].push({ it: element.it, page: element.page, operations: element.operations ?? '', sequence: element.sequence});
                     } else {
-                        postsContent[element.post] = [{ it: element.it, page: element.page, operations: element.operations ?? '' }];
+                        postsContent[element.post] = [{ it: element.it, page: element.page, operations: element.operations ?? '', sequence: element.sequence }];
                         postsUseds.push(String(element.post));
                     }
                 }
@@ -86,9 +86,14 @@ export class ProdUserController {
                     return await newPdfDoc.copyPages(existingPdfDoc, [0]);
                 });
 
+                Object.keys(postsContent).forEach(key => {
+                    postsContent[key].sort((a, b) => Number(a.sequence) - Number(b.sequence));
+                });
+
                 const pdf = postsContent[post];
 
                 // Processa as páginas e operações em paralelo, mas mantendo o resultado na ordem correta
+
                 const pagePromises = pdf.map(async (el) => {
                     let pages: any[] = [];
 
@@ -128,7 +133,7 @@ export class ProdUserController {
 
             console.log(pdf)
 
-            fs.writeFileSync(path.resolve(__dirname, `../files/production_its/${content.name}.pdf`), pdf)
+            fs.writeFileSync(path.resolve(__dirname, `../../files/production_its/${content.name}.pdf`), pdf)
 
             return true
         }
@@ -171,7 +176,7 @@ export class ProdUserController {
             name = result.name;
 
             // 2. pegando o caminho do arquivo 
-            const filePath: string = path.resolve(__dirname, `../files/production_its/${req.file?.originalname}`)
+            const filePath: string = path.resolve(__dirname, `../../files/production_its/${req.file?.originalname}`)
 
             // 3. convertendo o conteúdo do arquivo em json
             const jsonData = convertExcelToJsonWithoutAlterLine(filePath)
