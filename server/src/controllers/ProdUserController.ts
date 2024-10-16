@@ -56,6 +56,7 @@ export class ProdUserController {
 
     // para carregar a IT
     static loadProductionIT = async (model: string, product: string, line: string) => {
+        console.log('Começando a atualizar')
         const content = await ProdUser.exsitsThisListInProductionListsByModelLineAndProduct(
             model, product, line
         ) as { status: boolean, content: string, name: string }

@@ -72,8 +72,6 @@ export class ProdUserViews {
                 return false
             }
 
-
-
             if (content.latestUpdated !== 'loading') {
                 const pdfBuffer = fs.readFileSync(path.resolve(__dirname, `../files/production_its/${content.name}.pdf`))
                 return pdfBuffer
