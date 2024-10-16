@@ -25,7 +25,7 @@ export const uploadEngineeringLists = multer({ storage: storageEngineeringList }
 // para salvar as listas de produção
 const storageProductionList = multer.diskStorage({
     destination: (req, file, callback) => {
-        const filePath: string = path.join(__dirname, '../../files/production_its')
+        const filePath: string = path.join(__dirname, '../files/production_its')
         console.log('Chamado no multer: ', filePath)
         callback(null, filePath)
     },

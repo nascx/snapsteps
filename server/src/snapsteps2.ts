@@ -4,14 +4,14 @@ import cors from 'cors'
 
 import { config  } from 'dotenv'
   
-import { uploadEngineeringLists, uploadIT, uploadProductionListsMulter } from '../src/config/multer'
+import { uploadEngineeringLists, uploadIT, uploadProductionListsMulter } from './config/multer'
 
 import { ProdUserController, } from './controllers/ProdUserController'
 import { handleUploadIT } from './controllers/sgiCtrl'
 import { sendPdfByPost } from './views/sendPDfByPost'
 import { sendQAFile } from './views/sendQAfile'
 import { Auth } from './controllers/Auth'
-import { uploadQualityFile } from '../src/config/multer'
+import { uploadQualityFile } from './config/multer'
 import { SGIUserController } from './controllers/SGIUserController'
 import { ProdUserViews } from './views/ProdUserViews'
 config()

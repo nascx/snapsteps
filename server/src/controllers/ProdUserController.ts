@@ -133,7 +133,7 @@ export class ProdUserController {
 
             console.log(pdf)
 
-            fs.writeFileSync(path.resolve(__dirname, `../../files/production_its/${content.name}.pdf`), pdf)
+            fs.writeFileSync(path.resolve(__dirname, `../files/production_its/${content.name}.pdf`), pdf)
 
             return true
         }
@@ -176,7 +176,7 @@ export class ProdUserController {
             name = result.name;
 
             // 2. pegando o caminho do arquivo 
-            const filePath: string = path.resolve(__dirname, `../../files/production_its/${req.file?.originalname}`)
+            const filePath: string = path.resolve(__dirname, `../files/production_its/${req.file?.originalname}`)
 
             // 3. convertendo o conteúdo do arquivo em json
             const jsonData = convertExcelToJsonWithoutAlterLine(filePath)
