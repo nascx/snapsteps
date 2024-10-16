@@ -60,12 +60,15 @@ export class ProdUserViews {
                 model as string, product as string, line as string
             ) as { status: boolean, content: string, name: string, latestUpdated: string };
 
+            console.log(content.latestUpdated)
 
             if (content.latestUpdated === '00/00/0000') {
                 const latestUpdatedDate = moment().format('DD/MM/YYYY')
                 await ProdUser.updateLatestUpdatedDate(content.name, 'loading')
                 await ProdUserController.loadProductionIT(model, product, line)
                 await ProdUser.updateLatestUpdatedDate(content.name, latestUpdatedDate)
+                const pdfBuffer = fs.readFileSync(path.resolve(__dirname, `../files/production_its/${content.name}.pdf`))
+                return pdfBuffer
             }
 
             if (content.latestUpdated === 'error') {
