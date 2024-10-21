@@ -61,31 +61,33 @@ export class ProdUserViews {
             ) as { status: boolean, content: string, name: string, latestUpdated: string };
 
             console.log(content.latestUpdated)
+            
+            const latestUpdatedDate = moment().format('DD/MM/YYYY')
+            await ProdUser.updateLatestUpdatedDate(content.name, 'loading')
+            await ProdUserController.loadProductionIT(model, product, line)
+            await ProdUser.updateLatestUpdatedDate(content.name, latestUpdatedDate)
+            const pdfBuffer = fs.readFileSync(path.resolve(__dirname, `../files/production_its/${content.name}.pdf`))
+            return pdfBuffer
 
-            if (content.latestUpdated === '00/00/0000') {
-                const latestUpdatedDate = moment().format('DD/MM/YYYY')
-                await ProdUser.updateLatestUpdatedDate(content.name, 'loading')
-                await ProdUserController.loadProductionIT(model, product, line)
-                await ProdUser.updateLatestUpdatedDate(content.name, latestUpdatedDate)
-                const pdfBuffer = fs.readFileSync(path.resolve(__dirname, `../files/production_its/${content.name}.pdf`))
-                return pdfBuffer
-            }
+            /* if (content.latestUpdated === '00/00/0000') {
 
-            if (content.latestUpdated === 'error') {
-                return false
-            }
+            } */
 
-            if (content.latestUpdated !== 'loading') {
-                const pdfBuffer = fs.readFileSync(path.resolve(__dirname, `../files/production_its/${content.name}.pdf`))
-                return pdfBuffer
-            } else {
-                return new Promise((resolve) => {
-                    setTimeout(async () => {
-                        const result = await this.getProductionITUploaded(model, product, line);
-                        resolve(result);
-                    }, 5000);
-                });
-            }
+            /*  if (content.latestUpdated === 'error') {
+                 return false
+             }
+ 
+             if (content.latestUpdated !== 'loading') {
+                 const pdfBuffer = fs.readFileSync(path.resolve(__dirname, `../files/production_its/${content.name}.pdf`))
+                 return pdfBuffer
+             } else {
+                 return new Promise((resolve) => {
+                     setTimeout(async () => {
+                         const result = await this.getProductionITUploaded(model, product, line);
+                         resolve(result);
+                     }, 5000);
+                 });
+             } */
 
 
         } catch (error) {
