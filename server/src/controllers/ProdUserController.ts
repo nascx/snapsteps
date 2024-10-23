@@ -222,4 +222,19 @@ export class ProdUserController {
             console.log(error)
         }
     }
+
+    static getITOptions = async (req: Request, res: Response) => {
+        try {
+            const data = await ProdUser.getITOptions(req.query.value as string) as {name: string}[]
+
+            const dataWithFilePath = data.map((it) => {
+                return {name: it.name, path: path.resolve(__dirname, `../files/its/${it.name}.pdf`)}
+            })
+
+            res.status(200).json(dataWithFilePath)
+            
+        } catch (error) {
+            res.status(500).json('Error')
+        }
+    }
 }

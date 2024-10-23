@@ -396,4 +396,23 @@ export class ProdUser {
             throw error
         }
     }
+
+    static getITOptions = async (value: string) => {
+        return new Promise (async (resolve, reject) => {
+
+            console.log(value)
+            const q = 'SELECT name FROM its WHERE name LIKE ?'
+
+            db.query(q, [`%${value}%`],(err, data) => {
+                if (err) {
+                    reject()
+                }
+
+                if (data && data.length > 0) {
+                    resolve(data)
+                }
+            })
+            
+        })
+    }
 }

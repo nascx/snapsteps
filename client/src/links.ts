@@ -9,6 +9,7 @@ export const linksQA = [
         label: 'Visualizar IT da Produção',
         url: `${host}/qa/get-pdf`
     },
+    
 ]
 
 export const linksProd = [
@@ -23,7 +24,11 @@ export const linksProd = [
     {
         label: 'Fazer upload de lista',
         url: `${host}/prod/list-upload`
-    }
+    },
+    {
+        label: 'Visualizar IT original',
+        url: `${host}/prod/original-it`
+    },
 ]
 
 export const linksEng = [

@@ -61,7 +61,7 @@ export class ProdUserViews {
             ) as { status: boolean, content: string, name: string, latestUpdated: string };
 
             console.log(content.latestUpdated)
-            
+
             const latestUpdatedDate = moment().format('DD/MM/YYYY')
             await ProdUser.updateLatestUpdatedDate(content.name, 'loading')
             await ProdUserController.loadProductionIT(model, product, line)
@@ -114,5 +114,23 @@ export class ProdUserViews {
             res.status(500).send('Erro ao processar o PDF.');
         }
     };
+
+    static getOriginalIT = (req: Request, res: Response) => {
+        try {
+            const { filepath } = req.query
+
+            console.log(filepath)
+
+            const buffer = fs.readFileSync(path.resolve(filepath as string))
+
+            res.setHeader('Content-Type', 'application/pdf');
+            res.setHeader('Content-Disposition', 'inline; filename=trdtrcece.pdf');
+            res.send(Buffer.from(buffer));
+
+        } catch (error) {
+            console.log(error)
+            res.status(500).json({ message: "Error", error })
+        }
+    }
 
 }
