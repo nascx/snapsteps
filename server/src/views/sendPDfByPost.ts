@@ -14,15 +14,15 @@ export const sendPdfByPost = async (req: Request, res: Response) => {
         if (content.status) {
 
             const jsonData = JSON.parse(content.content);
-            const postsContent: { [key: string]: { it: string, page: number, operations: string }[] } = {};
+            const postsContent: { [key: string]: { it: string, page: number, operations: string, sequence: number }[] } = {};
             const postsUseds: string[] = [post as string];
 
-            jsonData.forEach((element: { post: string, it: string, page: number, operations: string }, i: number) => {
+            jsonData.forEach((element: { post: string, it: string, page: number, operations: string, sequence: number }, i: number) => {
                 if (i > 0) {
                     if (postsContent[element.post]) {
-                        postsContent[element.post].push({ it: element.it, page: element.page, operations: element.operations ?? '' });
+                        postsContent[element.post].push({ it: element.it, page: element.page, operations: element.operations ?? '', sequence: element.sequence});
                     } else {
-                        postsContent[element.post] = [{ it: element.it, page: element.page, operations: element.operations ?? '' }];
+                        postsContent[element.post] = [{ it: element.it, page: element.page, operations: element.operations ?? '', sequence: element.sequence }];
                     }
                 }
             });
@@ -44,7 +44,7 @@ export const sendPdfByPost = async (req: Request, res: Response) => {
                 newPdfDoc.addPage(existingPage);
 
                 Object.keys(postsContent).forEach(key => {
-                    postsContent[key].sort((a, b) => a.operations.localeCompare(b.operations));
+                    postsContent[key].sort((a, b) => Number(a.sequence) - Number(b.sequence));
                 });
 
                 const pdf = postsContent[post];
